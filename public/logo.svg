@@ -1,0 +1,68 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .outer-ring { fill: #5C2E1F; }
+      .bg-circle { fill: #E8E8E8; }
+      .bread { fill: #D97706; }
+      .holes { fill: #5C2E1F; }
+      .text-main { font-family: Arial, sans-serif; font-weight: bold; fill: #5C2E1F; }
+      .text-halal { font-family: Arial, sans-serif; font-style: italic; fill: #D97706; font-weight: bold; }
+      .text-arabic { font-family: Arial, sans-serif; fill: #5C2E1F; font-weight: bold; }
+      .text-sub { font-family: Arial, sans-serif; font-size: 12px; fill: #5C2E1F; font-weight: bold; letter-spacing: 2px; }
+    </style>
+  </defs>
+  
+  <!-- Outer ring -->
+  <circle cx="100" cy="100" r="98" class="outer-ring"/>
+  
+  <!-- White/light background -->
+  <circle cx="100" cy="100" r="92" class="bg-circle"/>
+  
+  <!-- Bread slice - BIGGER -->
+  <g transform="translate(100, 50)">
+    <!-- Bread outline -->
+    <path d="M -28,-10 L -26,-20 Q -18,-24 0,-24 Q 18,-24 26,-20 L 28,-10 Q 28,5 20,15 L -20,15 Q -28,5 -28,-10 Z" class="bread"/>
+    
+    <!-- Hole patterns (toast) -->
+    <circle cx="-16" cy="-8" r="2.5" class="holes"/>
+    <circle cx="-8" cy="-12" r="2.5" class="holes"/>
+    <circle cx="0" cy="-10" r="2.5" class="holes"/>
+    <circle cx="8" cy="-12" r="2.5" class="holes"/>
+    <circle cx="16" cy="-8" r="2.5" class="holes"/>
+    
+    <circle cx="-14" cy="2" r="2.5" class="holes"/>
+    <circle cx="-2" cy="4" r="2.5" class="holes"/>
+    <circle cx="12" cy="2" r="2.5" class="holes"/>
+    
+    <circle cx="-6" cy="10" r="2" class="holes"/>
+    <circle cx="6" cy="10" r="2" class="holes"/>
+    
+    <!-- Crust details -->
+    <path d="M -24,-16 Q -20,-19 -16,-17" stroke="#8B4513" strokeWidth="0.5" fill="none"/>
+    <path d="M 0,-22 Q 4,-23 8,-21" stroke="#8B4513" strokeWidth="0.5" fill="none"/>
+    <path d="M 16,-17 Q 20,-19 24,-16" stroke="#8B4513" strokeWidth="0.5" fill="none"/>
+  </g>
+  
+  <!-- Main text: PEACE BAKE -->
+  <text x="100" y="118" text-anchor="middle" class="text-main" font-size="20">PEACE BAKE</text>
+  
+  <!-- Arabic Halal text -->
+  <text x="100" y="138" text-anchor="middle" class="text-arabic" font-size="16">حلال</text>
+  
+  <!-- English Halal text -->
+  <text x="100" y="152" text-anchor="middle" class="text-halal" font-size="13">HALAL</text>
+  
+  <!-- Circular Special Bread text path aligned to inner border (center 100,100 r=90) -->
+  <defs>
+    <!-- Lower arc moved slightly down (5px) away from halal text -->
+    <path id="circlePath" d="M 35,115 A 65,65 0 0,0 165,115" fill="none"/>
+  </defs>
+  <text class="text-sub" font-size="14" letter-spacing="2">
+    <textPath href="#circlePath" startOffset="50%" text-anchor="middle">
+      SPECIAL BREAD
+    </textPath>
+  </text>
+  
+  <!-- Inner border accent -->
+  <circle cx="100" cy="100" r="90" fill="none" stroke="#5C2E1F" strokeWidth="0.5" opacity="0.5"/>
+</svg>
