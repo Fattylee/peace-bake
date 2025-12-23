@@ -44,21 +44,21 @@ export default function BakeryLandingPage() {
           <div className="grid grid-cols-2 gap-4">
             <div className="relative h-48 md:h-60 rounded-2xl overflow-hidden shadow-xl">
               <img
-                src="/Family and Family-Mini.jpg"
+                src="/landing-page/Family and Family-Mini.jpg"
                 alt="Family and Family Mini Bread"
                 className="h-full w-full object-cover"
               />
             </div>
             <div className="relative h-48 md:h-60 rounded-2xl overflow-hidden shadow-xl">
               <img
-                src="/Jumbo and Family-mini size bread_.jpg"
+                src="/landing-page/Jumbo and Family-mini size bread_.jpg"
                 alt="Jumbo Bread"
                 className="h-full w-full object-cover"
               />
             </div>
             <div className="relative col-span-2 h-56 md:h-72 rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="/Family-mini.jpeg"
+                src="/landing-page/Family-mini.jpeg"
                 alt="Peace Bake Bread Display"
                 className="h-full w-full object-cover"
               />
