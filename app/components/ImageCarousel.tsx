@@ -129,7 +129,7 @@ export default function ImageCarousel({ images, interval = 4000 }: Props) {
       tabIndex={0}
       onKeyDown={handleKeyDown}
       ref={liveRef}
-      className="relative rounded-2xl overflow-hidden shadow-xl h-56 md:h-72 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300"
+      className="relative rounded-2xl overflow-hidden shadow-xl h-72 md:h-96 focus:outline-none focus-visible:ring-4 focus-visible:ring-amber-300"
       onMouseEnter={() => (hoverRef.current = true)}
       onMouseLeave={() => (hoverRef.current = false)}
       onTouchStart={onTouchStart}
