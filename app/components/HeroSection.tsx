@@ -1,4 +1,20 @@
+"use client";
+
+import ImageCarousel from "./ImageCarousel";
+
 export default function HeroSection() {
+  const images = [
+    {
+      src: "/landing-page/Family and Family-Mini.jpg",
+      alt: "Family and Family Mini Bread",
+    },
+    {
+      src: "/landing-page/Jumbo and Family-mini size bread_.jpg",
+      alt: "Jumbo Bread",
+    },
+    { src: "/landing-page/Family-mini.jpeg", alt: "Peace Bake Bread Display" },
+  ];
+
   return (
     <section className="bg-gradient-to-br from-amber-200 to-orange-100">
       <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
@@ -7,10 +23,9 @@ export default function HeroSection() {
             Freshly Baked Happiness
           </h1>
           <p className="mt-6 text-lg text-amber-800">
-            Welcome to{" "}
-            <span className="font-semibold">Peace Bake Bakery</span>, where
-            every loaf is baked with love, quality ingredients, and peace of
-            mind.
+            Welcome to <span className="font-semibold">Peace Bake Bakery</span>,
+            where every loaf is baked with love, quality ingredients, and peace
+            of mind.
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
@@ -35,28 +50,8 @@ export default function HeroSection() {
             </a>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="relative h-48 md:h-60 rounded-2xl overflow-hidden shadow-xl">
-            <img
-              src="/landing-page/Family and Family-Mini.jpg"
-              alt="Family and Family Mini Bread"
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="relative h-48 md:h-60 rounded-2xl overflow-hidden shadow-xl">
-            <img
-              src="/landing-page/Jumbo and Family-mini size bread_.jpg"
-              alt="Jumbo Bread"
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="relative col-span-2 h-56 md:h-72 rounded-2xl overflow-hidden shadow-2xl">
-            <img
-              src="/landing-page/Family-mini.jpeg"
-              alt="Peace Bake Bread Display"
-              className="h-full w-full object-cover"
-            />
-          </div>
+        <div>
+          <ImageCarousel images={images} />
         </div>
       </div>
     </section>
