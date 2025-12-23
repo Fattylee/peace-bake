@@ -19,14 +19,32 @@ export default function LocationSection() {
               Ogun State, Nigeria
             </span>
           </div>
-          <div className="mt-6 flex items-center gap-3">
-            <Phone className="text-amber-700" />
-            <a
-              href="tel:+2348062870354"
-              className="font-semibold text-amber-800"
-            >
-              +234 806 287 0354
-            </a>
+          <div className="mt-6 flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <Phone className="text-amber-700" />
+              <a
+                href="tel:+2348062870354"
+                className="font-semibold text-amber-800"
+              >
+                +234 806 287 0354
+              </a>
+            </div>
+            <div className="flex items-center gap-3 ml-9">
+              <a
+                href="tel:+2347039572446"
+                className="font-semibold text-amber-800"
+              >
+                +234 703 957 2446
+              </a>
+            </div>
+            <div className="flex items-center gap-3 ml-9">
+              <a
+                href="tel:+2349034234702"
+                className="font-semibold text-amber-800"
+              >
+                +234 903 423 4702
+              </a>
+            </div>
           </div>
         </div>
         <div className="bg-white rounded-2xl shadow-lg p-8">
