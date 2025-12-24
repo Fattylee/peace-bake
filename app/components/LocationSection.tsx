@@ -22,30 +22,13 @@ export default function LocationSection() {
           <div className="mt-6 flex flex-col gap-3">
             <h3 className="text-xl font-semibold text-amber-900">Contact Us</h3>
             <p className="text-gray-700">We'd love to hear from you. Call or email us and we’ll get back to you as soon as possible.</p>
-            <div className="flex items-center gap-3 mt-2">
+            <div className="flex items-center gap-3 mt-2 flex-wrap">
               <Phone className="text-amber-700" />
-              <a
-                href="tel:+2348062870354"
-                className="font-semibold text-amber-800"
-              >
-                +234 806 287 0354
-              </a>
-            </div>
-            <div className="flex items-center gap-3 ml-9">
-              <a
-                href="tel:+2347039572446"
-                className="font-semibold text-amber-800"
-              >
-                +234 703 957 2446
-              </a>
-            </div>
-            <div className="flex items-center gap-3 ml-9">
-              <a
-                href="tel:+2349034234702"
-                className="font-semibold text-amber-800"
-              >
-                +234 903 423 4702
-              </a>
+              <a href="tel:+2348062870354" className="font-semibold text-amber-800">+234 806 287 0354</a>
+              <span className="text-gray-400">•</span>
+              <a href="tel:+2347039572446" className="font-semibold text-amber-800">+234 703 957 2446</a>
+              <span className="text-gray-400">•</span>
+              <a href="tel:+2349034234702" className="font-semibold text-amber-800">+234 903 423 4702</a>
             </div>
             <div className="flex items-center gap-3 mt-2">
               <Mail className="text-amber-700" />
