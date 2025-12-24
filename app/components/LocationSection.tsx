@@ -1,6 +1,17 @@
 import { Phone, MapPin, Mail } from "lucide-react";
+import { Fragment } from "react";
 
 export default function LocationSection() {
+  const phoneContacts = [
+    { label: "Sales Rep", number: "+2349034234702" },
+    { label: "Ummu Abdillah", number: "+2347039572446" },
+    { label: "Abu Abdillah", number: "+2348062870354" },
+  ];
+  // write a function convert +2348062870354 to +234 806 287 0354
+  const convertPhoneNumber = (number: string) => {
+    return number.replace(/(\+234)(\d{3})(\d{3})(\d{4})/, "$1 $2 $3 $4");
+  };
+
   return (
     <section id="location" className="bg-amber-100 py-20 px-6">
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
@@ -27,27 +38,21 @@ export default function LocationSection() {
             </p>
             <div className="flex items-center gap-3 mt-2 flex-wrap">
               <Phone className="text-amber-700" />
-              <a
-                href="tel:+2348062870354"
-                className="font-semibold text-amber-800"
-              >
-                +234 806 287 0354
-              </a>
-              <span className="text-gray-400">•</span>
-              <a
-                href="tel:+2347039572446"
-                className="font-semibold text-amber-800"
-              >
-                +234 703 957 2446
-              </a>
-              <span className="text-gray-400">•</span>
-              <a
-                href="tel:+2349034234702"
-                className="font-semibold text-amber-800"
-              >
-                +234 903 423 4702
-              </a>
+              {phoneContacts.map((contact, index) => (
+                <Fragment key={index}>
+                  <a
+                    href={`tel:${contact.number}`}
+                    className="font-semibold text-amber-800"
+                  >
+                    {convertPhoneNumber(contact.number)}
+                  </a>
+                  {index < phoneContacts.length - 1 && (
+                    <span className="text-gray-400">•</span>
+                  )}
+                </Fragment>
+              ))}
             </div>
+
             <div className="flex items-center gap-3 mt-2">
               <Mail className="text-amber-700" />
               <a
