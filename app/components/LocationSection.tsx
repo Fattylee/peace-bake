@@ -1,4 +1,4 @@
-import { Phone, MapPin } from "lucide-react";
+import { Phone, MapPin, Mail } from "lucide-react";
 
 export default function LocationSection() {
   return (
@@ -20,7 +20,9 @@ export default function LocationSection() {
             </span>
           </div>
           <div className="mt-6 flex flex-col gap-3">
-            <div className="flex items-center gap-3">
+            <h3 className="text-xl font-semibold text-amber-900">Contact Us</h3>
+            <p className="text-gray-700">We'd love to hear from you. Call or email us and we’ll get back to you as soon as possible.</p>
+            <div className="flex items-center gap-3 mt-2">
               <Phone className="text-amber-700" />
               <a
                 href="tel:+2348062870354"
@@ -43,6 +45,15 @@ export default function LocationSection() {
                 className="font-semibold text-amber-800"
               >
                 +234 903 423 4702
+              </a>
+            </div>
+            <div className="flex items-center gap-3 mt-2">
+              <Mail className="text-amber-700" />
+              <a
+                href="mailto:fattylee.remod@gmail.com?subject=Inquiry%20from%20Peace%20Bake%20Bakery%20Website&body=Hello%20Peace%20Bake%20Bakery%2C%0A%0AI%E2%80%99d%20like%20to%20ask%20about...%0A%0AThank%20you!"
+                className="font-semibold text-amber-800"
+              >
+                fattylee.remod@gmail.com
               </a>
             </div>
           </div>
