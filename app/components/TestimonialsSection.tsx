@@ -11,14 +11,14 @@ const testimonials = [
     text: "The freshest bread I've ever tasted! I can't go a week without ordering from Peace Bake. Halal certified and absolutely delicious.",
   },
   {
-    name: "Ahmed Hassan",
+    name: "Popoola Sulaimon Olatunde",
     role: "Office Manager",
     image: "👨‍💼",
     rating: 5,
     text: "We supply our office with Peace Bake bread daily. Our staff loves it, and the bulk discount is amazing. Highly recommended!",
   },
   {
-    name: "Adekunle Olanrewaju",
+    name: "Iya Teacher",
     role: "Shopkeeper",
     image: "👨‍🏭",
     rating: 5,
