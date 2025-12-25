@@ -1,6 +1,11 @@
 "use client";
 
 import { Building2, Users, Briefcase } from "lucide-react";
+import {
+  CALL_TO_ACTION_PHONE_NUMBER,
+  PHONE_DISPLAY,
+  WHATSAPP_BASE_URL,
+} from "../constants";
 
 const offerings = [
   {
@@ -92,7 +97,7 @@ export default function BulkOrdersSection() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="https://wa.me/2347039572446?text=I%20am%20interested%20in%20a%20bulk%2Fcorporate%20order%20from%20Peace%20Bake%20Bakery"
+              href={`${WHATSAPP_BASE_URL}?text=I%20am%20interested%20in%20a%20bulk%2Fcorporate%20order%20from%20Peace%20Bake%20Bakery`}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-semibold transition"
@@ -100,10 +105,10 @@ export default function BulkOrdersSection() {
               WhatsApp Now
             </a>
             <a
-              href="tel:+2347039572446"
+              href={`tel:${CALL_TO_ACTION_PHONE_NUMBER}`}
               className="border-2 border-amber-700 text-amber-700 hover:bg-amber-50 px-8 py-3 rounded-xl font-semibold transition"
             >
-              Call +234 703 957 2446
+              Call {PHONE_DISPLAY}
             </a>
           </div>
         </div>

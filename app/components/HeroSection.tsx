@@ -1,6 +1,7 @@
 "use client";
 
 import ImageCarousel from "./ImageCarousel";
+import { CALL_TO_ACTION_PHONE_NUMBER, WHATSAPP_BASE_URL } from "../constants";
 
 export default function HeroSection() {
   const images = [
@@ -29,13 +30,13 @@ export default function HeroSection() {
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
-              href="tel:+2347039572446"
+              href={`tel:${CALL_TO_ACTION_PHONE_NUMBER}`}
               className="bg-amber-700 hover:bg-amber-800 text-white px-6 py-3 rounded-xl shadow-lg transition"
             >
               Call to Order
             </a>
             <a
-              href="https://wa.me/2347039572446?text=Hello%20Peace%20Bake%20Bakery%2C%20I%20would%20like%20to%20place%20an%20order."
+              href={`${WHATSAPP_BASE_URL}?text=Hello%20Peace%20Bake%20Bakery%2C%20I%20would%20like%20to%20place%20an%20order.`}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow-lg transition"

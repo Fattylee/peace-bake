@@ -1,3 +1,5 @@
+import { CALL_TO_ACTION_PHONE_NUMBER } from "../constants";
+
 export default function Header() {
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -27,7 +29,7 @@ export default function Header() {
             Location
           </a>
           <a
-            href="tel:+2347039572446"
+            href={`tel:${CALL_TO_ACTION_PHONE_NUMBER}`}
             className="bg-amber-700 text-white px-4 py-2 rounded-lg hover:bg-amber-800 font-medium"
           >
             Call Now

@@ -1,6 +1,7 @@
 "use client";
 
 import { Check } from "lucide-react";
+import { WHATSAPP_BASE_URL } from "../constants";
 
 const plans = [
   {
@@ -124,7 +125,7 @@ export default function SubscriptionPlans() {
               </ul>
 
               <a
-                href="https://wa.me/2347039572446?text=I%20want%20to%20subscribe%20to%20the%20Peace%20Bake%20Bread%20Subscription%20Plan"
+                href={`${WHATSAPP_BASE_URL}?text=I%20want%20to%20subscribe%20to%20the%20Peace%20Bake%20Bread%20Subscription%20Plan`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`block text-center py-3 rounded-xl font-bold transition ${
