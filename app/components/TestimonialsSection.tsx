@@ -1,6 +1,7 @@
 "use client";
 
 import { Star } from "lucide-react";
+import { WHATSAPP_BASE_URL } from "../constants";
 
 const testimonials = [
   {
@@ -86,7 +87,9 @@ export default function TestimonialsSection() {
             Experience the difference fresh, halal-certified bread makes
           </p>
           <a
-            href="#order"
+            href={`${WHATSAPP_BASE_URL}?text=Hello%20Peace%20Bake%20Bakery%2C%20I%20would%20like%20to%20place%20an%20order.`}
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block bg-white text-amber-700 hover:bg-amber-50 px-8 py-3 rounded-xl font-bold transition"
           >
             Order Now
