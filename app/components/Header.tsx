@@ -27,7 +27,7 @@ export default function Header() {
             Location
           </a>
           <a
-            href="tel:+2348062870354"
+            href="tel:+2347039572446"
             className="bg-amber-700 text-white px-4 py-2 rounded-lg hover:bg-amber-800 font-medium"
           >
             Call Now

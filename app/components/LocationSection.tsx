@@ -112,7 +112,7 @@ export default function LocationSection() {
             <li>Sunday: 8:00 AM – 8:00 PM</li>
           </ul>
           <a
-            href="tel:+2348062870354"
+            href="tel:+2347039572446"
             className="mt-8 inline-block bg-amber-700 text-white px-6 py-3 rounded-xl hover:bg-amber-800 transition"
           >
             Call Now

@@ -29,13 +29,13 @@ export default function HeroSection() {
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
-              href="tel:+2348062870354"
+              href="tel:+2347039572446"
               className="bg-amber-700 hover:bg-amber-800 text-white px-6 py-3 rounded-xl shadow-lg transition"
             >
               Call to Order
             </a>
             <a
-              href="https://wa.me/2348062870354?text=Hello%20Peace%20Bake%20Bakery%2C%20I%20would%20like%20to%20place%20an%20order."
+              href="https://wa.me/2347039572446?text=Hello%20Peace%20Bake%20Bakery%2C%20I%20would%20like%20to%20place%20an%20order."
               target="_blank"
               rel="noopener noreferrer"
               className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow-lg transition"
