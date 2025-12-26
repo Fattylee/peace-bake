@@ -1,8 +1,8 @@
 export default function AboutSection() {
   return (
-    <section className="py-20 px-6">
+    <section className="py-20 px-6 bg-amber-50 dark:bg-slate-700 transition-colors">
       <div className="max-w-5xl mx-auto text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-amber-900">
+        <h2 className="text-3xl md:text-4xl font-bold text-amber-900 dark:text-amber-300">
           Why Choose Peace Bake Bakery?
         </h2>
         <p className="mt-6 text-lg text-gray-700">
@@ -17,7 +17,7 @@ export default function AboutSection() {
           (item, index) => (
             <div
               key={index}
-              className="bg-white p-8 rounded-2xl shadow-md text-center"
+              className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-md text-center"
             >
               <h3 className="text-xl font-semibold text-amber-800">{item}</h3>
               <p className="mt-4 text-gray-600">

@@ -17,13 +17,13 @@ export default function HeroSection() {
   ];
 
   return (
-    <section className="bg-gradient-to-br from-amber-200 to-orange-100">
+    <section className="bg-linear-to-br from-amber-200 to-orange-100 dark:from-slate-800 dark:to-slate-700 transition-colors">
       <div className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
         <div>
-          <h1 className="text-4xl md:text-6xl font-extrabold text-amber-900 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-extrabold text-amber-900 dark:text-amber-300 leading-tight">
             Freshly Baked Happiness
           </h1>
-          <p className="mt-6 text-lg text-amber-800">
+          <p className="mt-6 text-lg text-amber-800 dark:text-amber-200">
             Welcome to <span className="font-semibold">Peace Bake Bakery</span>,
             where every loaf is baked with love, quality ingredients, and peace
             of mind.

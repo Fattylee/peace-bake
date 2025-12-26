@@ -36,10 +36,10 @@ const testimonials = [
 
 export default function TestimonialsSection() {
   return (
-    <section className="py-20 px-6 bg-white">
+    <section className="py-20 px-6 bg-white dark:bg-slate-800 transition-colors">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-amber-900 mb-4">
+          <h2 className="text-4xl font-bold text-amber-900 dark:text-amber-300 mb-4">
             What Our Customers Say
           </h2>
           <p className="text-gray-600 text-lg">
@@ -74,12 +74,14 @@ export default function TestimonialsSection() {
                 ))}
               </div>
 
-              <p className="text-gray-700 italic">"{testimonial.text}"</p>
+              <p className="text-gray-700 italic">
+                &ldquo;{testimonial.text}&rdquo;
+              </p>
             </div>
           ))}
         </div>
 
-        <div className="bg-gradient-to-r from-amber-600 to-orange-500 rounded-2xl p-12 text-center text-white">
+        <div className="bg-linear-to-r from-amber-600 to-orange-500 rounded-2xl p-12 text-center text-white">
           <h3 className="text-3xl font-bold mb-4">
             Join Thousands of Happy Customers
           </h3>

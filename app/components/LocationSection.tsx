@@ -1,6 +1,6 @@
 import { Phone, MapPin, Mail } from "lucide-react";
 import { Fragment } from "react";
-import { CALL_TO_ACTION_PHONE_NUMBER, WHATSAPP_BASE_URL } from "../constants";
+import { CALL_TO_ACTION_PHONE_NUMBER } from "../constants";
 
 export default function LocationSection() {
   const phoneContacts = [
@@ -14,10 +14,13 @@ export default function LocationSection() {
   };
 
   return (
-    <section id="location" className="bg-amber-100 py-20 px-6">
+    <section
+      id="location"
+      className="bg-amber-100 dark:bg-slate-700 py-20 px-6 transition-colors"
+    >
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
         <div>
-          <h2 className="text-3xl font-bold text-amber-900">
+          <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-300">
             Visit Our Bakery
           </h2>
           <p className="mt-6 text-gray-700">We are proudly located at:</p>
@@ -34,8 +37,8 @@ export default function LocationSection() {
           <div className="mt-6 flex flex-col gap-3">
             <h3 className="text-xl font-semibold text-amber-900">Contact Us</h3>
             <p className="text-gray-700">
-              We'd love to hear from you. Call or email us and we’ll get back to
-              you as soon as possible.
+              We&rsquo;d love to hear from you. Call or email us and we&rsquo;ll
+              get back to you as soon as possible.
             </p>
             <div className="flex items-center gap-3 mt-2 flex-wrap">
               <Phone className="text-amber-700" />

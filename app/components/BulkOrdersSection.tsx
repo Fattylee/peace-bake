@@ -48,10 +48,10 @@ const offerings = [
 
 export default function BulkOrdersSection() {
   return (
-    <section className="py-20 px-6 bg-amber-50">
+    <section className="py-20 px-6 bg-amber-50 dark:bg-slate-700 transition-colors">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-amber-900 mb-4">
+          <h2 className="text-4xl font-bold text-amber-900 dark:text-amber-300 mb-4">
             Bulk & Business Orders
           </h2>
           <p className="text-gray-600 text-lg">
@@ -77,7 +77,7 @@ export default function BulkOrdersSection() {
                 <ul className="space-y-3 mb-8">
                   {offer.benefits.map((benefit, i) => (
                     <li key={i} className="flex items-start gap-3">
-                      <span className="w-2 h-2 bg-amber-600 rounded-full mt-2 flex-shrink-0"></span>
+                      <span className="w-2 h-2 bg-amber-600 rounded-full mt-2 shrink-0"></span>
                       <span className="text-sm text-gray-700">{benefit}</span>
                     </li>
                   ))}
