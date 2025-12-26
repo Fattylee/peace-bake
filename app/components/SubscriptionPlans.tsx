@@ -53,13 +53,13 @@ const plans = [
 
 export default function SubscriptionPlans() {
   return (
-    <section className="py-20 px-6 bg-white">
+    <section className="py-20 px-6 bg-white dark:bg-slate-800 transition-colors">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-amber-900 mb-4">
+          <h2 className="text-4xl font-bold text-amber-900 dark:text-amber-300 mb-4">
             Bread Subscriptions
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 text-lg dark:text-gray-300">
             Get fresh bread delivered weekly at discounted prices
           </p>
         </div>
@@ -118,7 +118,7 @@ export default function SubscriptionPlans() {
               <ul className="mb-8 space-y-3">
                 {plan.benefits.map((benefit, i) => (
                   <li key={i} className="flex items-start gap-3">
-                    <Check className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                    <Check className="w-5 h-5 shrink-0 mt-0.5" />
                     <span className="text-sm">{benefit}</span>
                   </li>
                 ))}

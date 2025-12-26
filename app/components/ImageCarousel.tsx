@@ -36,7 +36,7 @@ export default function ImageCarousel({ images, interval = 4000 }: Props) {
     return () => {
       if (timerRef.current) window.clearInterval(timerRef.current);
     };
-  }, [images.length, interval]);
+  }, [images.length, interval, images]);
 
   const prev = () => setIndex((i) => (i - 1 + images.length) % images.length);
   const next = () => setIndex((i) => (i + 1) % images.length);

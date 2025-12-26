@@ -12,7 +12,7 @@ import Footer from "./components/Footer";
 
 export default function BakeryLandingPage() {
   return (
-    <main className="min-h-screen bg-amber-50 text-gray-800">
+    <main className="min-h-screen bg-amber-50 dark:bg-slate-900 text-gray-800 dark:text-gray-100 transition-colors">
       <Header />
       <HeroSection />
       <AboutSection />
