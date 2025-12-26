@@ -42,7 +42,7 @@ export default function TestimonialsSection() {
           <h2 className="text-4xl font-bold text-amber-900 dark:text-amber-300 mb-4">
             What Our Customers Say
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 text-lg dark:text-gray-300">
             Trusted by individuals, businesses, and communities
           </p>
         </div>

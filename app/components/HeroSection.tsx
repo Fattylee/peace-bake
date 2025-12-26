@@ -45,7 +45,7 @@ export default function HeroSection() {
             </a>
             <a
               href="#location"
-              className="border border-amber-700 text-amber-800 px-6 py-3 rounded-xl hover:bg-amber-100 transition"
+              className="border border-amber-700 text-amber-800 px-6 py-3 rounded-xl hover:bg-amber-100 transition dark:border-amber-200 dark:text-amber-200 dark:hover:bg-slate-700"
             >
               Visit Us
             </a>

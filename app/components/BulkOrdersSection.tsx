@@ -54,7 +54,7 @@ export default function BulkOrdersSection() {
           <h2 className="text-4xl font-bold text-amber-900 dark:text-amber-300 mb-4">
             Bulk & Business Orders
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 text-lg dark:text-gray-300">
             Grow your business with Peace Bake Bakery
           </p>
         </div>

@@ -17,13 +17,29 @@ export default function AboutSection() {
           (item, index) => (
             <div
               key={index}
-              className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-md text-center"
+              className="bg-white dark:bg-slate-800 p-8 rounded-2xl shadow-md text-center transition-colors"
             >
-              <h3 className="text-xl font-semibold text-amber-800">{item}</h3>
-              <p className="mt-4 text-gray-600">
-                We bake daily to ensure every customer enjoys fresh, nourishing
-                bread straight from the oven.
-              </p>
+              <h3 className="text-xl font-semibold text-amber-800 dark:text-amber-200">
+                {item}
+              </h3>
+              {index === 0 ? (
+                <p className="mt-4 text-gray-600 dark:text-gray-300">
+                  We bake daily to ensure every customer enjoys fresh,
+                  nourishing bread straight from the oven.
+                </p>
+              ) : index === 1 ? (
+                <p className="mt-4 text-gray-600 dark:text-gray-300">
+                  We source the finest local flours and natural ingredients — no
+                  shortcuts. Expect bold, honest flavors and textures you can
+                  taste in every bite.
+                </p>
+              ) : (
+                <p className="mt-4 text-gray-600 dark:text-gray-300">
+                  Loved by neighbors and visitors alike — our warm loaves and
+                  friendly service keep customers coming back season after
+                  season.
+                </p>
+              )}
             </div>
           )
         )}
