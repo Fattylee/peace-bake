@@ -7,12 +7,7 @@ export default function ThemeToggleClient() {
   const { theme, toggleTheme } = useTheme();
 
   const handleClick = () => {
-    console.log("Toggle clicked, current theme:", theme);
     toggleTheme();
-    console.log(
-      "After toggle, html dark class:",
-      document.documentElement.classList.contains("dark")
-    );
   };
 
   return (

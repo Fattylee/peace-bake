@@ -1,6 +1,5 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
 import dynamic from "next/dynamic";
 import { Suspense } from "react";
 
