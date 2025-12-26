@@ -22,27 +22,29 @@ export default function Header() {
             </p>
           </div>
         </div>
-        <nav className="hidden md:flex gap-6 items-center">
-          <a
-            href="#"
-            className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors"
-          >
-            Home
-          </a>
-          <a
-            href="#location"
-            className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors"
-          >
-            Location
-          </a>
-          <a
-            href={`tel:${CALL_TO_ACTION_PHONE_NUMBER}`}
-            className="bg-amber-700 dark:bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-800 dark:hover:bg-amber-700 font-medium transition-colors"
-          >
-            Call Now
-          </a>
+        <div className="flex items-center gap-4">
+          <nav className="hidden md:flex gap-6 items-center">
+            <a
+              href="#"
+              className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors"
+            >
+              Home
+            </a>
+            <a
+              href="#location"
+              className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors"
+            >
+              Location
+            </a>
+            <a
+              href={`tel:${CALL_TO_ACTION_PHONE_NUMBER}`}
+              className="bg-amber-700 dark:bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-800 dark:hover:bg-amber-700 font-medium transition-colors"
+            >
+              Call Now
+            </a>
+          </nav>
           <ThemeToggle />
-        </nav>
+        </div>
       </div>
     </header>
   );
