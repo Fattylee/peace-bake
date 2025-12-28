@@ -23,6 +23,7 @@ export default function ChatBot() {
   ]);
   const [input, setInput] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -31,6 +32,12 @@ export default function ChatBot() {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  useEffect(() => {
+    if (isOpen) {
+      setTimeout(() => inputRef.current?.focus(), 100);
+    }
+  }, [isOpen]);
 
   const handleSendMessage = (text: string) => {
     if (!text.trim()) return;
@@ -177,6 +184,7 @@ export default function ChatBot() {
           {/* Input */}
           <div className="border-t dark:border-slate-700 p-4 flex gap-2 bg-white dark:bg-slate-800">
             <input
+              ref={inputRef}
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
