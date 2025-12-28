@@ -18,22 +18,37 @@ export default function SalesDashboard() {
   const [selectedDate, setSelectedDate] = useState(
     new Date().toISOString().split("T")[0]
   );
+  const [startDate, setStartDate] = useState(
+    new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split("T")[0]
+  );
+  const [endDate, setEndDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [viewMode, setViewMode] = useState<"today" | "range">("today");
 
   // Check authentication on mount
   useEffect(() => {
     const auth = localStorage.getItem("sales_auth");
     if (auth === "true") {
       setAuthenticated(true);
-      fetchSales(selectedDate);
+      if (viewMode === "today") {
+        fetchSalesForDate(selectedDate);
+      } else {
+        fetchSalesRange(startDate, endDate);
+      }
     }
   }, []);
 
-  // Fetch sales for selected date
+  // Fetch sales based on view mode
   useEffect(() => {
     if (authenticated) {
-      fetchSales(selectedDate);
+      if (viewMode === "today") {
+        fetchSalesForDate(selectedDate);
+      } else {
+        fetchSalesRange(startDate, endDate);
+      }
     }
-  }, [selectedDate, authenticated]);
+  }, [selectedDate, viewMode, startDate, endDate, authenticated]);
 
   const handlePasswordSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,7 +57,11 @@ export default function SalesDashboard() {
       setAuthenticated(true);
       localStorage.setItem("sales_auth", "true");
       setPassword("");
-      fetchSales(selectedDate);
+      if (viewMode === "today") {
+        fetchSalesForDate(selectedDate);
+      } else {
+        fetchSalesRange(startDate, endDate);
+      }
     } else {
       alert("Incorrect password");
     }
@@ -54,10 +73,25 @@ export default function SalesDashboard() {
     setSales([]);
   };
 
-  const fetchSales = async (date: string) => {
+  const fetchSalesForDate = async (date: string) => {
     setLoading(true);
     try {
       const response = await fetch(`/api/sales?date=${date}`);
+      const data = await response.json();
+      setSales(data);
+    } catch (error) {
+      console.error("Error fetching sales:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchSalesRange = async (start: string, end: string) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `/api/sales?startDate=${start}&endDate=${end}`
+      );
       const data = await response.json();
       setSales(data);
     } catch (error) {
@@ -135,7 +169,7 @@ export default function SalesDashboard() {
 
       <main className="flex-grow max-w-7xl mx-auto w-full px-6 py-8">
         {/* Top Bar */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold text-amber-900 dark:text-amber-400">
               Sales Dashboard
@@ -145,16 +179,60 @@ export default function SalesDashboard() {
             </p>
           </div>
 
-          <div className="flex gap-4">
-            <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              className="border dark:border-slate-600 rounded-lg px-4 py-2 dark:bg-slate-800 dark:text-gray-100"
-            />
+          <div className="flex flex-col md:flex-row gap-3 w-full md:w-auto">
+            {/* View Mode Toggle */}
+            <div className="flex gap-2 bg-gray-200 dark:bg-slate-700 rounded-lg p-1">
+              <button
+                onClick={() => setViewMode("today")}
+                className={`px-4 py-2 rounded font-medium transition ${
+                  viewMode === "today"
+                    ? "bg-amber-600 text-white"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-600"
+                }`}
+              >
+                Today
+              </button>
+              <button
+                onClick={() => setViewMode("range")}
+                className={`px-4 py-2 rounded font-medium transition ${
+                  viewMode === "range"
+                    ? "bg-amber-600 text-white"
+                    : "text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-slate-600"
+                }`}
+              >
+                Range
+              </button>
+            </div>
+
+            {/* Date Inputs */}
+            {viewMode === "today" ? (
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="border dark:border-slate-600 rounded-lg px-4 py-2 dark:bg-slate-800 dark:text-gray-100"
+              />
+            ) : (
+              <div className="flex gap-2">
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-800 dark:text-gray-100"
+                />
+                <span className="text-gray-600 dark:text-gray-400 py-2">to</span>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-800 dark:text-gray-100"
+                />
+              </div>
+            )}
+
             <button
               onClick={handleLogout}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition"
+              className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center justify-center gap-2 transition whitespace-nowrap"
             >
               <LogOut size={18} />
               Logout

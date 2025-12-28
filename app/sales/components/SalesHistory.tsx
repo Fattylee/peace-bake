@@ -16,6 +16,7 @@ export default function SalesHistory({ sales, onDelete }: SalesHistoryProps) {
 
   const filteredSales = sales.filter((sale) => {
     const matchesSearch =
+      !searchTerm || // If search is empty, match all
       sale.debtor?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       sale.dispatcher?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       sale.notes?.toLowerCase().includes(searchTerm.toLowerCase());
