@@ -1,6 +1,11 @@
 import { Phone, MapPin, Mail } from "lucide-react";
 import { Fragment } from "react";
-import { CALL_TO_ACTION_PHONE_NUMBER, ADDRESS_STREET, ADDRESS_AREA, ADDRESS_STATE } from "../constants";
+import {
+  CALL_TO_ACTION_PHONE_NUMBER,
+  ADDRESS_STREET,
+  ADDRESS_AREA,
+  ADDRESS_STATE,
+} from "../constants";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 
 export default function LocationSection() {

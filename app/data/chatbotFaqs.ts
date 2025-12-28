@@ -59,8 +59,7 @@ export const CHATBOT_FAQS = [
       "address",
       "location",
     ],
-    answer:
-      `You can reach us via:\n• Phone: ${PHONE_DISPLAY}\n• Email: fattylee.remod@gmail.com\n• WhatsApp: Available for quick orders\n• Address: ${ADDRESS_FULL}`,
+    answer: `You can reach us via:\n• Phone: ${PHONE_DISPLAY}\n• Email: fattylee.remod@gmail.com\n• WhatsApp: Available for quick orders\n• Address: ${ADDRESS_FULL}`,
     suggestions: ["Opening hours", "Delivery"],
   },
   {
