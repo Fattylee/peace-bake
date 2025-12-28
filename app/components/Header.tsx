@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { CALL_TO_ACTION_PHONE_NUMBER } from "../constants";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -32,18 +33,18 @@ export default function Header({
         </div>
         <div className="flex items-center gap-4">
           <nav className="hidden md:flex gap-6 items-center">
-            <a
+            <Link
               href={homeHref}
               className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors"
             >
               Home
-            </a>
-            <a
+            </Link>
+            <Link
               href={locationHref}
               className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors"
             >
               Location
-            </a>
+            </Link>
             <a
               href={`tel:${CALL_TO_ACTION_PHONE_NUMBER}`}
               className="bg-amber-700 dark:bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-800 dark:hover:bg-amber-700 font-medium transition-colors"
