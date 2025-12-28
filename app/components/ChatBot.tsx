@@ -66,7 +66,7 @@ export default function ChatBot() {
     // If no exact match, try keyword matching
     if (!faq) {
       faq = CHATBOT_FAQS.find((item) => {
-        const keywords = (item as any).keywords || [];
+        const keywords = item.keywords || [];
         return keywords.some(
           (keyword: string) =>
             userInput.includes(keyword) || keyword.includes(userInput)
@@ -78,7 +78,7 @@ export default function ChatBot() {
     if (!faq) {
       const words = userInput.split(" ");
       faq = CHATBOT_FAQS.find((item) => {
-        const keywords = (item as any).keywords || [];
+        const keywords = item.keywords || [];
         return words.some((word) =>
           keywords.some(
             (keyword: string) =>
