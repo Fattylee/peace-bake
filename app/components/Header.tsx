@@ -3,7 +3,15 @@
 import { CALL_TO_ACTION_PHONE_NUMBER } from "../constants";
 import { ThemeToggle } from "./ThemeToggle";
 
-export default function Header() {
+interface HeaderProps {
+  homeHref?: string;
+  locationHref?: string;
+}
+
+export default function Header({
+  homeHref = "#",
+  locationHref = "#location",
+}: HeaderProps) {
   return (
     <header className="bg-white dark:bg-slate-900 shadow-sm sticky top-0 z-50 transition-colors">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -25,13 +33,13 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <nav className="hidden md:flex gap-6 items-center">
             <a
-              href="#"
+              href={homeHref}
               className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors"
             >
               Home
             </a>
             <a
-              href="#location"
+              href={locationHref}
               className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors"
             >
               Location
