@@ -6,8 +6,8 @@ import { CALL_TO_ACTION_PHONE_NUMBER } from "./constants";
 export default function NotFound() {
   return (
     <div className="min-h-screen flex flex-col bg-amber-50 dark:bg-slate-900 transition-colors">
-      <Header />
-      <main className="flex-grow flex items-center justify-center text-gray-800 dark:text-gray-100">
+      <Header homeHref="/" locationHref="/#location" />
+      <main className="grow flex items-center justify-center text-gray-800 dark:text-gray-100">
         <div className="max-w-3xl mx-auto text-center px-6 py-16">
           <div className="text-8xl">🥖</div>
           <h1 className="mt-6 text-4xl font-bold text-amber-900 dark:text-amber-300">

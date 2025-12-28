@@ -1,6 +1,11 @@
 import { Phone, MapPin, Mail } from "lucide-react";
 import { Fragment } from "react";
-import { CALL_TO_ACTION_PHONE_NUMBER } from "../constants";
+import {
+  CALL_TO_ACTION_PHONE_NUMBER,
+  ADDRESS_STREET,
+  ADDRESS_AREA,
+  ADDRESS_STATE,
+} from "../constants";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 
 export default function LocationSection() {
@@ -19,7 +24,7 @@ export default function LocationSection() {
       id="location"
       className="bg-amber-100 dark:bg-slate-700 py-20 px-6 transition-colors"
     >
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+      <div className="max-w-6xl mx-auto grid md:grid-cols-[1fr_480px] gap-12 items-start">
         <div>
           <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-300">
             Visit Our Bakery
@@ -30,11 +35,11 @@ export default function LocationSection() {
           <div className="mt-4 flex items-start gap-3">
             <MapPin className="text-amber-700 dark:text-amber-300 mt-1" />
             <span className="text-gray-800 dark:text-gray-300">
-              7, Peace Bake Str,
+              {ADDRESS_STREET},
               <br />
-              Olugbode, Ado-Odo Ota,
+              {ADDRESS_AREA},
               <br />
-              Ogun State, Nigeria
+              {ADDRESS_STATE}
             </span>
           </div>
           <div className="mt-6 flex flex-col gap-3">
@@ -45,21 +50,25 @@ export default function LocationSection() {
               We&rsquo;d love to hear from you. Call or email us and we&rsquo;ll
               get back to you as soon as possible.
             </p>
-            <div className="flex items-center gap-3 mt-2 flex-wrap">
-              <Phone className="text-amber-700 dark:text-amber-300" />
-              {phoneContacts.map((contact, index) => (
-                <Fragment key={index}>
-                  <a
-                    href={`tel:${contact.number}`}
-                    className="font-semibold text-amber-800 dark:text-amber-200"
-                  >
-                    {convertPhoneNumber(contact.number)}
-                  </a>
-                  {index < phoneContacts.length - 1 && (
-                    <span className="text-gray-400 dark:text-gray-400">•</span>
-                  )}
-                </Fragment>
-              ))}
+            <div className="mt-2 flex items-start gap-3">
+              <Phone className="text-amber-700 dark:text-amber-300 flex-shrink-0 mt-1" />
+              <div className="flex-1 flex items-center gap-3 flex-wrap">
+                {phoneContacts.map((contact, index) => (
+                  <Fragment key={index}>
+                    <a
+                      href={`tel:${contact.number}`}
+                      className="font-semibold text-amber-800 dark:text-amber-200"
+                    >
+                      {convertPhoneNumber(contact.number)}
+                    </a>
+                    {index < phoneContacts.length - 1 && (
+                      <span className="text-gray-400 dark:text-gray-400">
+                        •
+                      </span>
+                    )}
+                  </Fragment>
+                ))}
+              </div>
             </div>
 
             <div className="flex items-center gap-3 mt-2">
@@ -104,7 +113,7 @@ export default function LocationSection() {
             </div>
           </div>
         </div>
-        <div className="bg-white rounded-2xl shadow-lg p-8 dark:bg-slate-800 dark:text-gray-200 transition-colors">
+        <div className="bg-white rounded-2xl shadow-lg p-8 dark:bg-slate-800 dark:text-gray-200 transition-colors w-full md:max-w-[480px]">
           <h3 className="text-2xl font-semibold text-amber-800 dark:text-amber-200 transition-colors">
             Opening Hours
           </h3>
