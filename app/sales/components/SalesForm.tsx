@@ -8,6 +8,7 @@ import {
   CUSTOMER_TYPES,
   SalesRecord,
   calculateProfit,
+  DEBTORS,
 } from "@/app/data/salesTypes";
 
 interface SalesFormProps {
@@ -20,12 +21,20 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
   const [quantity, setQuantity] = useState(1);
   const [customerType, setCustomerType] = useState<CustomerType>("Consumer");
   const [debtor, setDebtor] = useState("");
+  const [debtorDropdownOpen, setDebtorDropdownOpen] = useState(false);
+  const [debtorSearchTerm, setDebtorSearchTerm] = useState("");
   const [dispatcher, setDispatcher] = useState("");
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const amount = price * quantity;
   const profit = calculateProfit(breadSize, amount);
+
+  // Filter debtors based on search
+  const filteredDebtors = DEBTORS.filter((d) =>
+    d.toLowerCase().includes(debtorSearchTerm.toLowerCase())
+  );
 
   const handleBreadSizeChange = (newSize: BreadSize) => {
     setBreadSize(newSize);
@@ -37,8 +46,22 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
     setPrice(newPrice);
   };
 
+  const handleDebtorSelect = (selectedDebtor: string) => {
+    setDebtor(selectedDebtor);
+    setDebtorDropdownOpen(false);
+    setDebtorSearchTerm("");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+
+    // Validate debtor is filled
+    if (!debtor.trim()) {
+      setError("Debtor/Customer Name is required");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -57,7 +80,7 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
           quantity,
           amount,
           profit,
-          debtor: debtor || undefined,
+          debtor,
           customerType,
           dispatcher: dispatcher || undefined,
           notes: notes || undefined,
@@ -72,11 +95,12 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
       // Reset form
       setQuantity(1);
       setDebtor("");
+      setDebtorSearchTerm("");
       setDispatcher("");
       setNotes("");
     } catch (error) {
       console.error("Error submitting sale:", error);
-      alert("Failed to save sale");
+      setError("Failed to save sale. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -90,6 +114,12 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
       <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-6">
         Add New Sale
       </h2>
+
+      {error && (
+        <div className="mb-6 p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg">
+          {error}
+        </div>
+      )}
 
       <div className="grid md:grid-cols-2 gap-4 mb-6">
         {/* Bread Size Selection */}
@@ -186,21 +216,68 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
         </div>
       </div>
 
-      {/* Optional Fields */}
-      <div className="grid md:grid-cols-2 gap-4 mb-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Debtor/Customer Name (Optional)
-          </label>
+      {/* Debtor/Customer Name - REQUIRED with Autocomplete */}
+      <div className="mb-6 relative">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Debtor/Customer Name <span className="text-red-600">*</span>
+        </label>
+        <div className="relative">
           <input
             type="text"
-            value={debtor}
-            onChange={(e) => setDebtor(e.target.value)}
-            placeholder="e.g., AP Shop, Mummy Ola"
-            className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
+            value={debtor || debtorSearchTerm}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (debtor === value || !DEBTORS.includes(value)) {
+                setDebtorSearchTerm(value);
+                setDebtor("");
+              } else {
+                setDebtor(value);
+                setDebtorSearchTerm("");
+              }
+              setDebtorDropdownOpen(true);
+            }}
+            onFocus={() => setDebtorDropdownOpen(true)}
+            placeholder="Search or select from list..."
+            className={`w-full border-2 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none ${
+              error && !debtor
+                ? "border-red-500 focus:border-red-600"
+                : "border-gray-300 dark:border-slate-600 focus:border-amber-600"
+            }`}
           />
+          {debtorDropdownOpen && (
+            <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-700 border dark:border-slate-600 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
+              {filteredDebtors.length > 0 ? (
+                filteredDebtors.map((d) => (
+                  <button
+                    key={d}
+                    type="button"
+                    onClick={() => handleDebtorSelect(d)}
+                    className="w-full text-left px-3 py-2 hover:bg-amber-100 dark:hover:bg-slate-600 transition text-gray-800 dark:text-gray-200"
+                  >
+                    {d}
+                  </button>
+                ))
+              ) : debtorSearchTerm ? (
+                <div className="px-3 py-2 text-gray-500 dark:text-gray-400">
+                  No matches. Press Enter to add "{debtorSearchTerm}"
+                </div>
+              ) : (
+                <div className="px-3 py-2 text-gray-500 dark:text-gray-400">
+                  Type to search...
+                </div>
+              )}
+            </div>
+          )}
         </div>
+        {debtor && (
+          <p className="mt-2 text-sm text-green-600 dark:text-green-400">
+            Selected: <strong>{debtor}</strong>
+          </p>
+        )}
+      </div>
 
+      {/* Optional Fields */}
+      <div className="grid md:grid-cols-2 gap-4 mb-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Dispatcher (Optional)
@@ -213,19 +290,19 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
             className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
           />
         </div>
-      </div>
 
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Notes (Optional)
-        </label>
-        <textarea
-          value={notes}
-          onChange={(e) => setNotes(e.target.value)}
-          placeholder="e.g., Special order, bulk discount"
-          rows={2}
-          className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
-        />
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            Notes (Optional)
+          </label>
+          <input
+            type="text"
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            placeholder="e.g., Bulk order, special request"
+            className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
+          />
+        </div>
       </div>
 
       <button
