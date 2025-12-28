@@ -37,12 +37,6 @@ export default function Header({
         <div className="flex items-center gap-4">
           <nav className="hidden md:flex gap-6 items-center">
             <Link
-              href={homeHref}
-              className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors"
-            >
-              Home
-            </Link>
-            <Link
               href={locationHref}
               className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors"
             >
