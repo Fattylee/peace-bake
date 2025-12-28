@@ -46,23 +46,66 @@ export default function ChatBot() {
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
 
-    // Find matching FAQ
-    const faq = CHATBOT_FAQS.find(
+    // Smart matching with keyword search
+    const userInput = text.toLowerCase().trim();
+    let faq = CHATBOT_FAQS.find(
       (item) =>
-        item.question.toLowerCase() === text.toLowerCase() ||
-        item.id === text.toLowerCase()
+        item.question.toLowerCase() === userInput || item.id === userInput
     );
+
+    // If no exact match, try keyword matching
+    if (!faq) {
+      faq = CHATBOT_FAQS.find((item) => {
+        const keywords = (item as any).keywords || [];
+        return keywords.some(
+          (keyword: string) =>
+            userInput.includes(keyword) || keyword.includes(userInput)
+        );
+      });
+    }
+
+    // If still no match, try partial word matching
+    if (!faq) {
+      const words = userInput.split(" ");
+      faq = CHATBOT_FAQS.find((item) => {
+        const keywords = (item as any).keywords || [];
+        return words.some((word) =>
+          keywords.some(
+            (keyword: string) =>
+              keyword.includes(word) ||
+              (word.length > 3 && keyword.includes(word))
+          )
+        );
+      });
+    }
 
     // Add bot response with slight delay
     setTimeout(() => {
+      let botText = "";
+      let suggestions: string[] | undefined;
+
+      if (faq) {
+        botText = faq.answer;
+        suggestions = faq.suggestions;
+      } else {
+        // Smarter fallback with context-based suggestions
+        botText =
+          "I'm not sure about that. 🤔 Here are some topics I can help with:";
+        suggestions = [
+          "About us",
+          "Products",
+          "Opening hours",
+          "Contact",
+          "Delivery",
+        ];
+      }
+
       const botMessage: ChatMessage = {
         id: `bot-${Date.now()}`,
-        text: faq
-          ? faq.answer
-          : "Sorry, I didn't understand that. Try asking about our products, hours, or contact info!",
+        text: botText,
         sender: "bot",
         timestamp: new Date(),
-        suggestions: faq?.suggestions,
+        suggestions,
       };
       setMessages((prev) => [...prev, botMessage]);
     }, 300);
