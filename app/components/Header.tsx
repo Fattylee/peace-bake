@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { Menu, X } from "lucide-react";
 import { CALL_TO_ACTION_PHONE_NUMBER } from "../constants";
 import { ThemeToggle } from "./ThemeToggle";
 
@@ -13,6 +15,8 @@ export default function Header({
   homeHref = "#",
   locationHref = "#location",
 }: HeaderProps) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <header className="bg-white dark:bg-slate-900 shadow-sm sticky top-0 z-50 transition-colors">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -35,6 +39,7 @@ export default function Header({
           </div>
         </Link>
         <div className="flex items-center gap-4">
+          {/* Desktop Navigation */}
           <nav className="hidden md:flex gap-6 items-center">
             <Link
               href={locationHref}
@@ -49,9 +54,40 @@ export default function Header({
               Call Now
             </a>
           </nav>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 transition-colors"
+          >
+            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+
           <ThemeToggle />
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white dark:bg-slate-800 border-t dark:border-slate-700 transition-colors">
+          <nav className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-4">
+            <Link
+              href={locationHref}
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors py-2"
+            >
+              Location
+            </Link>
+            <a
+              href={`tel:${CALL_TO_ACTION_PHONE_NUMBER}`}
+              onClick={() => setMobileMenuOpen(false)}
+              className="bg-amber-700 dark:bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-800 dark:hover:bg-amber-700 font-medium transition-colors w-fit"
+            >
+              Call Now
+            </a>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
