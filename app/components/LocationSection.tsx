@@ -1,6 +1,6 @@
 import { Phone, MapPin, Mail } from "lucide-react";
 import { Fragment } from "react";
-import { CALL_TO_ACTION_PHONE_NUMBER } from "../constants";
+import { CALL_TO_ACTION_PHONE_NUMBER, ADDRESS_STREET, ADDRESS_AREA, ADDRESS_STATE } from "../constants";
 import { WhatsAppIcon } from "./WhatsAppIcon";
 
 export default function LocationSection() {
@@ -30,11 +30,11 @@ export default function LocationSection() {
           <div className="mt-4 flex items-start gap-3">
             <MapPin className="text-amber-700 dark:text-amber-300 mt-1" />
             <span className="text-gray-800 dark:text-gray-300">
-              7, Peace Bake Str,
+              {ADDRESS_STREET},
               <br />
-              Olugbode, Ado-Odo Ota,
+              {ADDRESS_AREA},
               <br />
-              Ogun State, Nigeria
+              {ADDRESS_STATE}
             </span>
           </div>
           <div className="mt-6 flex flex-col gap-3">
