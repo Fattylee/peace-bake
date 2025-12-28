@@ -220,7 +220,9 @@ export default function SalesDashboard() {
                   onChange={(e) => setStartDate(e.target.value)}
                   className="border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-800 dark:text-gray-100"
                 />
-                <span className="text-gray-600 dark:text-gray-400 py-2">to</span>
+                <span className="text-gray-600 dark:text-gray-400 py-2">
+                  to
+                </span>
                 <input
                   type="date"
                   value={endDate}
