@@ -16,7 +16,10 @@ export default function Header({
   return (
     <header className="bg-white dark:bg-slate-900 shadow-sm sticky top-0 z-50 transition-colors">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+        <Link
+          href={homeHref}
+          className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+        >
           <img
             src="/logo.svg"
             alt="Peace Bake Bakery Logo"
@@ -30,7 +33,7 @@ export default function Header({
               Freshly Baked Daily
             </p>
           </div>
-        </div>
+        </Link>
         <div className="flex items-center gap-4">
           <nav className="hidden md:flex gap-6 items-center">
             <Link
