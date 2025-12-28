@@ -35,12 +35,15 @@ export default function ChatBot() {
   const handleSendMessage = (text: string) => {
     if (!text.trim()) return;
 
+    const timestamp = new Date();
+    const messageId = `user-${timestamp.getTime()}`;
+
     // Add user message
     const userMessage: ChatMessage = {
-      id: `user-${Date.now()}`,
+      id: messageId,
       text,
       sender: "user",
-      timestamp: new Date(),
+      timestamp,
     };
 
     setMessages((prev) => [...prev, userMessage]);
@@ -101,7 +104,7 @@ export default function ChatBot() {
       }
 
       const botMessage: ChatMessage = {
-        id: `bot-${Date.now()}`,
+        id: `bot-${new Date().getTime()}`,
         text: botText,
         sender: "bot",
         timestamp: new Date(),

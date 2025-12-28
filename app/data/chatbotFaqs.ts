@@ -58,7 +58,7 @@ export const CHATBOT_FAQS = [
       "location",
     ],
     answer:
-      "You can reach us via:\n• Phone: +234 703 957 2446\n• Email: fattylee.remod@gmail.com\n• WhatsApp: Available for quick orders\n• Address: 7, Peace Bake Str, Ado-Odo Ota, Ogun State, Nigeria",
+      "You can reach us via:\n• Phone: +234 703 957 2446\n• Email: fattylee.remod@gmail.com\n• WhatsApp: Available for quick orders\n• Address: 7, Peace Bake Str, Olugbode, Ado-Odo Ota, Ogun State, Nigeria",
     suggestions: ["Opening hours", "Delivery"],
   },
   {
