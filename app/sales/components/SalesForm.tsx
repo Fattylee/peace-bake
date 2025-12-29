@@ -20,6 +20,9 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
   const [price, setPrice] = useState(930);
   const [quantity, setQuantity] = useState(1);
   const [customerType, setCustomerType] = useState<CustomerType>("Consumer");
+  const [customerTypeDropdownOpen, setCustomerTypeDropdownOpen] =
+    useState(false);
+  const [customerTypeSearchTerm, setCustomerTypeSearchTerm] = useState("");
   const [debtor, setDebtor] = useState("");
   const [debtorDropdownOpen, setDebtorDropdownOpen] = useState(false);
   const [debtorSearchTerm, setDebtorSearchTerm] = useState("");
@@ -36,6 +39,11 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
     d.toLowerCase().includes(debtorSearchTerm.toLowerCase())
   );
 
+  // Filter customer types based on search
+  const filteredCustomerTypes = CUSTOMER_TYPES.filter((ct) =>
+    ct.toLowerCase().includes(customerTypeSearchTerm.toLowerCase())
+  );
+
   const handleBreadSizeChange = (newSize: BreadSize) => {
     setBreadSize(newSize);
     const prices = BREAD_PRICES[newSize];
@@ -50,6 +58,12 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
     setDebtor(selectedDebtor);
     setDebtorDropdownOpen(false);
     setDebtorSearchTerm("");
+  };
+
+  const handleCustomerTypeSelect = (selectedType: CustomerType) => {
+    setCustomerType(selectedType);
+    setCustomerTypeDropdownOpen(false);
+    setCustomerTypeSearchTerm("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -197,22 +211,58 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
           />
         </div>
 
-        {/* Customer Type */}
+        {/* Customer Type - Searchable */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Customer Type
           </label>
-          <select
-            value={customerType}
-            onChange={(e) => setCustomerType(e.target.value as CustomerType)}
-            className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
-          >
-            {CUSTOMER_TYPES.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
+          <div className="relative">
+            <input
+              type="text"
+              value={customerType || customerTypeSearchTerm}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (customerType === value || !CUSTOMER_TYPES.includes(value)) {
+                  setCustomerTypeSearchTerm(value);
+                  setCustomerType("");
+                } else {
+                  setCustomerType(value as CustomerType);
+                  setCustomerTypeSearchTerm("");
+                }
+                setCustomerTypeDropdownOpen(true);
+              }}
+              onFocus={() => setCustomerTypeDropdownOpen(true)}
+              placeholder="Search customer type..."
+              className="w-full border-2 border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none focus:border-amber-600"
+            />
+            {customerTypeDropdownOpen && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-700 border dark:border-slate-600 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
+                {filteredCustomerTypes.length > 0 ? (
+                  filteredCustomerTypes.map((ct) => (
+                    <button
+                      key={ct}
+                      type="button"
+                      onClick={() =>
+                        handleCustomerTypeSelect(ct as CustomerType)
+                      }
+                      className="w-full text-left px-3 py-2 hover:bg-amber-100 dark:hover:bg-slate-600 transition text-gray-800 dark:text-gray-200 text-sm"
+                    >
+                      {ct}
+                    </button>
+                  ))
+                ) : (
+                  <div className="px-3 py-2 text-gray-500 dark:text-gray-400 text-sm">
+                    No matches
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          {customerType && (
+            <p className="mt-2 text-sm text-green-600 dark:text-green-400">
+              Selected: <strong>{customerType}</strong>
+            </p>
+          )}
         </div>
       </div>
 
