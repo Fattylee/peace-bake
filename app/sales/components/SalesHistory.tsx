@@ -101,6 +101,12 @@ export default function SalesHistory({ sales, onDelete }: SalesHistoryProps) {
               <th className="text-left py-3 px-4 font-bold dark:text-amber-400">
                 Type
               </th>
+              <th className="text-left py-3 px-4 font-bold dark:text-amber-400">
+                Dispatcher
+              </th>
+              <th className="text-left py-3 px-4 font-bold dark:text-amber-400">
+                Notes
+              </th>
               <th className="text-center py-3 px-4 font-bold dark:text-amber-400">
                 Action
               </th>
@@ -134,6 +140,12 @@ export default function SalesHistory({ sales, onDelete }: SalesHistoryProps) {
                   <td className="py-3 px-4 text-xs bg-amber-100 dark:bg-amber-900 text-amber-800 dark:text-amber-200 px-2 py-1 rounded w-fit">
                     {sale.customerType}
                   </td>
+                  <td className="py-3 px-4 text-gray-700 dark:text-gray-300">
+                    {sale.dispatcher || "-"}
+                  </td>
+                  <td className="py-3 px-4 text-gray-700 dark:text-gray-300 text-xs">
+                    {sale.notes || "-"}
+                  </td>
                   <td className="py-3 px-4 text-center">
                     <button
                       onClick={() =>
@@ -149,7 +161,7 @@ export default function SalesHistory({ sales, onDelete }: SalesHistoryProps) {
             ) : (
               <tr>
                 <td
-                  colSpan={8}
+                  colSpan={10}
                   className="py-8 text-center text-gray-500 dark:text-gray-400"
                 >
                   No sales records found

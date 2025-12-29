@@ -329,13 +329,16 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Dispatcher (Optional)
           </label>
-          <input
-            type="text"
+          <select
             value={dispatcher}
             onChange={(e) => setDispatcher(e.target.value)}
-            placeholder="e.g., Olumide"
             className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
-          />
+          >
+            <option value="">Select dispatcher...</option>
+            <option value="Olumide">Olumide</option>
+            <option value="David">David</option>
+            <option value="Ummu Abdillah">Ummu Abdillah</option>
+          </select>
         </div>
 
         <div>
