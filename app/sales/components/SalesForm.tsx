@@ -23,7 +23,7 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
   const [customerTypeDropdownOpen, setCustomerTypeDropdownOpen] =
     useState(false);
   const [customerTypeSearchTerm, setCustomerTypeSearchTerm] = useState("");
-  const [debtor, setDebtor] = useState("");
+  const [debtor, setDebtor] = useState("Staff");
   const [debtorDropdownOpen, setDebtorDropdownOpen] = useState(false);
   const [debtorSearchTerm, setDebtorSearchTerm] = useState("");
   const [dispatcher, setDispatcher] = useState("");
@@ -76,6 +76,12 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
       return;
     }
 
+    // Validate customer type is filled
+    if (!customerType || !customerType.trim()) {
+      setError("Customer Type is required");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -109,6 +115,7 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
       // Reset form
       setQuantity(1);
       setDebtor("");
+      setCustomerType("");
       setDebtorSearchTerm("");
       setDispatcher("");
       setNotes("");
@@ -197,24 +204,74 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
             className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 bg-gray-100 dark:bg-slate-900 dark:text-gray-300"
           />
         </div>
+      </div>
 
-        {/* Profit (Auto-calculated) */}
-        <div>
+      {/* Debtor and Customer Type Grid */}
+      <div className="grid md:grid-cols-2 gap-4 mb-6">
+        {/* Debtor/Customer Name - REQUIRED with Autocomplete */}
+        <div className="relative">
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Profit (₦)
+            Debtor/Customer Name <span className="text-red-600">*</span>
           </label>
-          <input
-            type="text"
-            value={`₦${profit.toLocaleString()}`}
-            disabled
-            className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 bg-green-50 dark:bg-slate-900 dark:text-green-400 font-semibold"
-          />
+          <div className="relative">
+            <input
+              type="text"
+              value={debtor || debtorSearchTerm}
+              onChange={(e) => {
+                const value = e.target.value;
+                if (debtor === value || !DEBTORS.includes(value)) {
+                  setDebtorSearchTerm(value);
+                  setDebtor("");
+                } else {
+                  setDebtor(value);
+                  setDebtorSearchTerm("");
+                }
+                setDebtorDropdownOpen(true);
+              }}
+              onFocus={() => setDebtorDropdownOpen(true)}
+              placeholder="Search or select from list..."
+              className={`w-full border-2 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none ${
+                error && !debtor
+                  ? "border-red-500 focus:border-red-600"
+                  : "border-gray-300 dark:border-slate-600 focus:border-amber-600"
+              }`}
+            />
+            {debtorDropdownOpen && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-700 border dark:border-slate-600 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
+                {filteredDebtors.length > 0 ? (
+                  filteredDebtors.map((d) => (
+                    <button
+                      key={d}
+                      type="button"
+                      onClick={() => handleDebtorSelect(d)}
+                      className="w-full text-left px-3 py-2 hover:bg-amber-100 dark:hover:bg-slate-600 transition text-gray-800 dark:text-gray-200"
+                    >
+                      {d}
+                    </button>
+                  ))
+                ) : debtorSearchTerm ? (
+                  <div className="px-3 py-2 text-gray-500 dark:text-gray-400">
+                    No matches. Press Enter to add "{debtorSearchTerm}"
+                  </div>
+                ) : (
+                  <div className="px-3 py-2 text-gray-500 dark:text-gray-400">
+                    Type to search...
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          {debtor && (
+            <p className="mt-2 text-sm text-green-600 dark:text-green-400">
+              Selected: <strong>{debtor}</strong>
+            </p>
+          )}
         </div>
 
-        {/* Customer Type - Searchable */}
+        {/* Customer Type - Searchable & REQUIRED */}
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-            Customer Type
+            Customer Type <span className="text-red-600">*</span>
           </label>
           <div className="relative">
             <input
@@ -266,66 +323,6 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
         </div>
       </div>
 
-      {/* Debtor/Customer Name - REQUIRED with Autocomplete */}
-      <div className="mb-6 relative">
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-          Debtor/Customer Name <span className="text-red-600">*</span>
-        </label>
-        <div className="relative">
-          <input
-            type="text"
-            value={debtor || debtorSearchTerm}
-            onChange={(e) => {
-              const value = e.target.value;
-              if (debtor === value || !DEBTORS.includes(value)) {
-                setDebtorSearchTerm(value);
-                setDebtor("");
-              } else {
-                setDebtor(value);
-                setDebtorSearchTerm("");
-              }
-              setDebtorDropdownOpen(true);
-            }}
-            onFocus={() => setDebtorDropdownOpen(true)}
-            placeholder="Search or select from list..."
-            className={`w-full border-2 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none ${
-              error && !debtor
-                ? "border-red-500 focus:border-red-600"
-                : "border-gray-300 dark:border-slate-600 focus:border-amber-600"
-            }`}
-          />
-          {debtorDropdownOpen && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-700 border dark:border-slate-600 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
-              {filteredDebtors.length > 0 ? (
-                filteredDebtors.map((d) => (
-                  <button
-                    key={d}
-                    type="button"
-                    onClick={() => handleDebtorSelect(d)}
-                    className="w-full text-left px-3 py-2 hover:bg-amber-100 dark:hover:bg-slate-600 transition text-gray-800 dark:text-gray-200"
-                  >
-                    {d}
-                  </button>
-                ))
-              ) : debtorSearchTerm ? (
-                <div className="px-3 py-2 text-gray-500 dark:text-gray-400">
-                  No matches. Press Enter to add "{debtorSearchTerm}"
-                </div>
-              ) : (
-                <div className="px-3 py-2 text-gray-500 dark:text-gray-400">
-                  Type to search...
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-        {debtor && (
-          <p className="mt-2 text-sm text-green-600 dark:text-green-400">
-            Selected: <strong>{debtor}</strong>
-          </p>
-        )}
-      </div>
-
       {/* Optional Fields */}
       <div className="grid md:grid-cols-2 gap-4 mb-6">
         <div>
@@ -353,6 +350,19 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
             className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
           />
         </div>
+      </div>
+
+      {/* Profit (Auto-calculated) */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Profit (₦)
+        </label>
+        <input
+          type="text"
+          value={`₦${profit.toLocaleString()}`}
+          disabled
+          className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 bg-green-50 dark:bg-slate-900 dark:text-green-400 font-semibold"
+        />
       </div>
 
       <button
