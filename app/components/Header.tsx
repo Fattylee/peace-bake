@@ -9,11 +9,13 @@ import { ThemeToggle } from "./ThemeToggle";
 interface HeaderProps {
   homeHref?: string;
   locationHref?: string;
+  hideNavigation?: boolean;
 }
 
 export default function Header({
-  homeHref = "#",
-  locationHref = "#location",
+  homeHref = "/",
+  locationHref = "/#location",
+  hideNavigation = false,
 }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -40,20 +42,22 @@ export default function Header({
         </Link>
         <div className="flex items-center gap-4">
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex gap-6 items-center">
-            <Link
-              href={locationHref}
-              className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors"
-            >
-              Location
-            </Link>
-            <a
-              href={`tel:${CALL_TO_ACTION_PHONE_NUMBER}`}
-              className="bg-amber-700 dark:bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-800 dark:hover:bg-amber-700 font-medium transition-colors"
-            >
-              Call Now
-            </a>
-          </nav>
+          {!hideNavigation && (
+            <nav className="hidden md:flex gap-6 items-center">
+              <Link
+                href={locationHref}
+                className="text-amber-800 dark:text-amber-200 hover:text-amber-900 dark:hover:text-amber-400 font-medium transition-colors"
+              >
+                Location
+              </Link>
+              <a
+                href={`tel:${CALL_TO_ACTION_PHONE_NUMBER}`}
+                className="bg-amber-700 dark:bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-800 dark:hover:bg-amber-700 font-medium transition-colors"
+              >
+                Call Now
+              </a>
+            </nav>
+          )}
 
           {/* Mobile Menu Button */}
           <button
@@ -68,7 +72,7 @@ export default function Header({
       </div>
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
+      {!hideNavigation && mobileMenuOpen && (
         <div className="md:hidden bg-white dark:bg-slate-800 border-t dark:border-slate-700 transition-colors">
           <nav className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-4">
             <Link
