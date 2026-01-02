@@ -1,7 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SalesRecord } from "@/app/data/salesTypes";
+import { validateToken, getTokenFromHeader } from "@/app/lib/auth";
 import * as fs from "fs";
 import * as path from "path";
+
+// Middleware to verify authentication
+function verifyAuth(request: NextRequest): boolean {
+  const authHeader = request.headers.get("authorization");
+  const token = getTokenFromHeader(authHeader);
+
+  if (!token) return false;
+  const payload = validateToken(token);
+  return payload !== null;
+}
 
 // Path to sales data file
 const getSalesFilePath = () => {
@@ -40,6 +51,14 @@ const saveSalesData = (data: SalesRecord[]) => {
 
 // GET: Fetch all sales records or filter by date
 export async function GET(request: NextRequest) {
+  // Verify authentication
+  if (!verifyAuth(request)) {
+    return NextResponse.json(
+      { error: "Unauthorized - Invalid or missing token" },
+      { status: 401 }
+    );
+  }
+
   const searchParams = request.nextUrl.searchParams;
   const date = searchParams.get("date");
   const startDate = searchParams.get("startDate");
@@ -69,6 +88,14 @@ export async function GET(request: NextRequest) {
 
 // POST: Create new sales record
 export async function POST(request: NextRequest) {
+  // Verify authentication
+  if (!verifyAuth(request)) {
+    return NextResponse.json(
+      { error: "Unauthorized - Invalid or missing token" },
+      { status: 401 }
+    );
+  }
+
   try {
     const body = await request.json();
 
@@ -104,6 +131,14 @@ export async function POST(request: NextRequest) {
 
 // PUT: Update sales record
 export async function PUT(request: NextRequest) {
+  // Verify authentication
+  if (!verifyAuth(request)) {
+    return NextResponse.json(
+      { error: "Unauthorized - Invalid or missing token" },
+      { status: 401 }
+    );
+  }
+
   try {
     const body = await request.json();
     const { id } = body;
@@ -138,6 +173,14 @@ export async function PUT(request: NextRequest) {
 
 // DELETE: Delete sales record
 export async function DELETE(request: NextRequest) {
+  // Verify authentication
+  if (!verifyAuth(request)) {
+    return NextResponse.json(
+      { error: "Unauthorized - Invalid or missing token" },
+      { status: 401 }
+    );
+  }
+
   try {
     const searchParams = request.nextUrl.searchParams;
     const id = searchParams.get("id");

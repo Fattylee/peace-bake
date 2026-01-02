@@ -1,6 +1,7 @@
 // Sales data types and constants
 export type BreadSize = "Jumbo" | "Family" | "Family-Mini" | "Solo";
 export type CustomerType = string; // Allow any customer type string
+export type UserRole = "sales_rep" | "admin";
 
 export interface SalesRecord {
   id: string;
@@ -16,6 +17,12 @@ export interface SalesRecord {
   dispatcher?: string;
   notes?: string;
   createdAt: string; // ISO timestamp
+}
+
+export interface DashboardUser {
+  role: UserRole;
+  username: string;
+  password: string;
 }
 
 // Default pricing (in Naira)

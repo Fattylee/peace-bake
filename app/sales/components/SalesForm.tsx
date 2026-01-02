@@ -13,9 +13,10 @@ import {
 
 interface SalesFormProps {
   onSaleAdded: (sale: SalesRecord) => void;
+  authToken?: string;
 }
 
-export default function SalesForm({ onSaleAdded }: SalesFormProps) {
+export default function SalesForm({ onSaleAdded, authToken }: SalesFormProps) {
   const [breadSize, setBreadSize] = useState<BreadSize>("Family");
   const [price, setPrice] = useState(930);
   const [quantity, setQuantity] = useState(1);
@@ -91,7 +92,10 @@ export default function SalesForm({ onSaleAdded }: SalesFormProps) {
 
       const response = await fetch("/api/sales", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authToken}`,
+        },
         body: JSON.stringify({
           date,
           time,
