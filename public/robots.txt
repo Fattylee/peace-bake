@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /sales
+Disallow: /.next/
+Disallow: /node_modules/
+
+Sitemap: https://peacebakebakery.com/sitemap.xml
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: *
+Crawl-delay: 1

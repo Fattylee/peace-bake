@@ -23,8 +23,22 @@ export default function LocationSection() {
     <section
       id="location"
       className="bg-amber-100 dark:bg-slate-700 py-20 px-6 transition-colors"
+      itemScope
+      itemType="https://schema.org/LocalBusiness"
     >
-      <div className="max-w-6xl mx-auto grid md:grid-cols-[1fr_480px] gap-12 items-start">
+      <meta itemProp="name" content="Peace Bake Bakery" />
+      <meta
+        itemProp="image"
+        content="/landing-page/Family and Family-Mini.jpg"
+      />
+      <meta itemProp="telephone" content="+2347039572446" />
+      <meta itemProp="priceRange" content="₦400 - ₦1500" />
+      <div
+        className="max-w-6xl mx-auto grid md:grid-cols-[1fr_480px] gap-12 items-start"
+        itemProp="address"
+        itemScope
+        itemType="https://schema.org/PostalAddress"
+      >
         <div>
           <h2 className="text-3xl font-bold text-amber-900 dark:text-amber-300">
             Visit Our Bakery
@@ -33,14 +47,17 @@ export default function LocationSection() {
             We are proudly located at:
           </p>
           <div className="mt-4 flex items-start gap-3">
-            <MapPin className="text-amber-700 dark:text-amber-300 mt-1" />
-            <span className="text-gray-800 dark:text-gray-300">
-              {ADDRESS_STREET},
+            <MapPin
+              className="text-amber-700 dark:text-amber-300 mt-1"
+              aria-hidden="true"
+            />
+            <address className="text-gray-800 dark:text-gray-300 not-italic">
+              <span itemProp="streetAddress">{ADDRESS_STREET}</span>,
               <br />
-              {ADDRESS_AREA},
+              <span itemProp="addressLocality">{ADDRESS_AREA}</span>,
               <br />
-              {ADDRESS_STATE}
-            </span>
+              <span itemProp="addressRegion">{ADDRESS_STATE}</span>
+            </address>
           </div>
           <div className="mt-6 flex flex-col gap-3">
             <h3 className="text-xl font-semibold text-amber-900 dark:text-amber-200 transition-colors">
@@ -51,18 +68,27 @@ export default function LocationSection() {
               get back to you as soon as possible.
             </p>
             <div className="mt-2 flex items-start gap-3">
-              <Phone className="text-amber-700 dark:text-amber-300 flex-shrink-0 mt-1" />
+              <Phone
+                className="text-amber-700 dark:text-amber-300 flex-shrink-0 mt-1"
+                aria-hidden="true"
+              />
               <div className="flex-1 flex items-center gap-3 flex-wrap">
                 {phoneContacts.map((contact, index) => (
                   <Fragment key={index}>
                     <a
                       href={`tel:${contact.number}`}
                       className="font-semibold text-amber-800 dark:text-amber-200"
+                      aria-label={`Call ${
+                        contact.label
+                      } at ${convertPhoneNumber(contact.number)}`}
                     >
                       {convertPhoneNumber(contact.number)}
                     </a>
                     {index < phoneContacts.length - 1 && (
-                      <span className="text-gray-400 dark:text-gray-400">
+                      <span
+                        className="text-gray-400 dark:text-gray-400"
+                        aria-hidden="true"
+                      >
                         •
                       </span>
                     )}
@@ -72,10 +98,14 @@ export default function LocationSection() {
             </div>
 
             <div className="flex items-center gap-3 mt-2">
-              <Mail className="text-amber-700 dark:text-amber-300" />
+              <Mail
+                className="text-amber-700 dark:text-amber-300"
+                aria-hidden="true"
+              />
               <a
                 href="mailto:fattylee.remod@gmail.com?subject=Inquiry%20from%20Peace%20Bake%20Bakery%20Website&body=Hello%20Peace%20Bake%20Bakery%2C%0A%0AI%E2%80%99d%20like%20to%20ask%20about...%0A%0AThank%20you!"
                 className="font-semibold text-amber-800 dark:text-amber-200"
+                aria-label="Email Peace Bake Bakery"
               >
                 fattylee.remod@gmail.com
               </a>
