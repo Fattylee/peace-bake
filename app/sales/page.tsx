@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { SalesRecord, UserRole, DASHBOARD_USERS } from "@/app/data/salesTypes";
+import { SalesRecord, UserRole } from "@/app/data/salesTypes";
 import SalesForm from "./components/SalesForm";
 import SalesStats from "./components/SalesStats";
 import SalesHistory from "./components/SalesHistory";
