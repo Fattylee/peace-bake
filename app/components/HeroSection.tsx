@@ -32,6 +32,7 @@ export default function HeroSection() {
             <a
               href={`tel:${CALL_TO_ACTION_PHONE_NUMBER}`}
               className="bg-amber-700 hover:bg-amber-800 text-white px-6 py-3 rounded-xl shadow-lg transition"
+              aria-label="Call Peace Bake Bakery to order bread"
             >
               Call to Order
             </a>
@@ -40,12 +41,14 @@ export default function HeroSection() {
               target="_blank"
               rel="noopener noreferrer"
               className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl shadow-lg transition"
+              aria-label="Order bread from Peace Bake Bakery on WhatsApp"
             >
               Order on WhatsApp
             </a>
             <a
               href="#location"
               className="border border-amber-700 text-amber-800 px-6 py-3 rounded-xl hover:bg-amber-100 transition dark:border-amber-200 dark:text-amber-200 dark:hover:bg-slate-700"
+              aria-label="Visit our bakery location"
             >
               Visit Us
             </a>

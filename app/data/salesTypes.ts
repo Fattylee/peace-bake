@@ -1,0 +1,266 @@
+// Sales data types and constants
+export type BreadSize = "Jumbo" | "Family" | "Family-Mini" | "Solo";
+export type CustomerType = string; // Allow any customer type string
+export type UserRole = "sales_rep" | "admin";
+
+export interface SalesRecord {
+  id: string;
+  date: string; // YYYY-MM-DD
+  time: string; // HH:MM:SS
+  breadSize: BreadSize;
+  price: number;
+  quantity: number;
+  amount: number; // price * quantity
+  profit: number; // calculated based on cost
+  debtor: string; // customer/debtor name - REQUIRED
+  customerType: CustomerType;
+  dispatcher?: string;
+  notes?: string;
+  createdAt: string; // ISO timestamp
+}
+
+export interface DashboardUser {
+  role: UserRole;
+  username: string;
+  password: string;
+}
+
+// Default pricing (in Naira)
+export const BREAD_PRICES: Record<BreadSize, number[]> = {
+  Jumbo: [1500, 1450, 1400, 1350],
+  Family: [1000, 930, 900, 860],
+  "Family-Mini": [800, 750, 700],
+  Solo: [400, 370, 350, 340],
+};
+
+// Approximate cost of goods sold (for profit calculation)
+export const BREAD_COSTS: Record<BreadSize, number> = {
+  Jumbo: 1156, // ~77% cost
+  Family: 686, // ~74% cost
+  "Family-Mini": 468, // ~62% cost
+  Solo: 218, // ~58% cost
+};
+
+export const CUSTOMER_TYPES: CustomerType[] = [
+  "Consumer",
+  "Retailer",
+  "Retailer (Ismail Aboki)",
+  "Retailer (Iya Teacher)",
+  "Retailer (Rose)",
+  "Retailer (MonShaAllah)",
+  "Retailer (Ariyo)",
+  "Retailer (Iya Elewa)",
+  "Retailer (Iya Sultan)",
+  "Retailer (Aunty Afusat)",
+  "Retailer (John)",
+  "Retailer (Divine)",
+  "Retailer (Iya Ibeji Ustadh)",
+  "Retailer (Ibrahim Aboki)",
+  "Retailer (Awwal)",
+  "Retailer (Mummy Sofiyyah)",
+  "Retailer (Mummy Samuel)",
+  "Retailer (Sarah)",
+  "Depo",
+  "Bakers Bread",
+  "Lafenwa Shop (Vendor)",
+  "Obasanjo Shop (Vendor)",
+  "All",
+  "TipaGarage Shop (Vendor)",
+  "Econet Shop (Vendor)",
+  "Depo (Obasanjo via UM)",
+  "Depo (Iya Aidimullah via UM)",
+  "Depo (Iya Muyiwa)",
+  "Depo (Iya Sadia Erinle via UM)",
+  "Depo (Iya Korede Ijagba)",
+  "Depo (Madam Baba Meto via UM)",
+  "Depo (Iya Basit)",
+  "Depo (Poultry)",
+  "Depo (Mummy Eemaan)",
+  "Depo (Madam Kashia)",
+  "Depo (Iya Hamed Elewa via UM)",
+  "Depo (Omo Ibo Ijoba via UM)",
+  "Depo (Omo Ibo Itele via UM)",
+  "Depo (Iya Ramadan)",
+  "Depo (Onifade Inside via UM)",
+  "Depo (Baba Odan)",
+  "Depo (Mummy Iyin)",
+  "Depo (Mummy Iyin SIster)",
+  "Depo (Iya Ire)",
+  "Depo (Iya Elewa Itele via UM)",
+  "Depo (Iya Adura Poultry)",
+  "Depo (Iya Joshua via UM)",
+  "Depo (Mrs Komolafe)",
+  "Depo (Mama Oshodi)",
+  "Staff (Ummu Abdillah)",
+  "Staff (Ummu Roiqoh)",
+  "Staff (Abu Abdillah)",
+  "Staff (Popoola)",
+  "Staff (Mummy Ola)",
+  "Staff (Arike)",
+  "Staff (Lukman)",
+  "Staff (AdeDamola)",
+  "Staff (Bascube)",
+  "Staff (Olumide)",
+  "Staff (David)",
+  "Staff (Muritador)",
+  "Staff (Samuel)",
+  "Staff (Fathia)",
+  "Agent (Iya Abdullah)",
+  "Agent (Mummy Anu)",
+  "Agent (Mummy Mary)",
+  "Agent (Mummy Rachael)",
+  "Agent (Mummy Odun)",
+  "Agent (Adeyemo)",
+  "Agent (Olumide)",
+  "Agent (Mummy Ola)",
+  "Agent (Mummy Nifemi)",
+  "Depo (Mr Lawal)",
+  "Depo (Baba Bose via UM)",
+  "Depo (Avilla via UM)",
+  "Retailer (Mrs. Alimat)",
+  "Retailer (Mummy Abdullah)",
+  "Retailer (Mummy Iyanu)",
+  "Retailer (Mummy Destiny)",
+  "Retailer (Iya Basit)",
+  "Retailer (Mummy Victory)",
+  "Retailer (Mrs Balikis)",
+  "Retailer (Tk Ventures)",
+  "Retailer (Brimirk)",
+  "Retailer (Mummy Ope)",
+  "Retailer (Tola)",
+  "Retailer (Faruq AP Aboki)",
+  "Retailer (Iya Seun Elewa)",
+  "Retailer (Mummy Isaac)",
+  "Retailer (Mummy Osu)",
+  "Retailer (Mummy Fawaz's Sis)",
+  "Retailer (Adeniji)",
+  "Retailer (Mummy Eni)",
+  "Retailer (Mummy Hassan)",
+  "Retailer (Mummy Rokibat)",
+  "Retailer (Mummy Elizabeth)",
+  "Retailer (Mama Tee)",
+  "Retailer (Mummy Moses)",
+  "Retailer (Mummy Lola)",
+  "Retailer (Mummy Ife)",
+  "Retailer (Aliamin)",
+  "Retailer (AbuBakr)",
+  "Retailer (Mummy Rachael)",
+  "Retailer (Omotola)",
+  "Retailer (Mummy Faith)",
+  "Retailer (Rose of sharon)",
+  "Retailer (Mummy Precious)",
+  "Retailer (Mrs Ajayi Bunmi)",
+  "Retailer (Mummy Iyin)",
+  "Retailer (Ayo)",
+  "Retailer (Mrs Ronke)",
+  "Retailer (Grandma)",
+  "Retailer (Mummy Aliyah)",
+  "Retailer (Mummy Mujeeb)",
+  "Retailer (Halleluyah)",
+  "Retailer (Falolu)",
+  "Retailer (Okiki)",
+  "Retailer (Mummy Goodness)",
+  "Retailer (Mummy Mathew)",
+  "Retailer (Esther)",
+  "Retailer (Mummy Pelumi)",
+  "Retailer (Iya Modupe)",
+  "Retailer (Iya Testimony)",
+  "Retailer (Iya Abigeal)",
+  "Retailer (Mummy Maryam)",
+  "Retailer (Mummy Coded)",
+  "Retailer (Mummy Nimot)",
+  "Retailer (Aboki Rabiu)",
+  "Retailer (Mr Rufus)",
+  "Retailer (Pillar Of Harvest)",
+  "Retailer (Deborah)",
+  "Retailer (Chioma)",
+  "Retailer (Ruka)",
+  "Retailer (Iya Tope)",
+  "Retailer (Iya Aishah)",
+  "Retailer (Yusuf)",
+  "Retailer (Adekola)",
+  "Retailer (Barakah)",
+  "Retailer (Nazipi Aboki)",
+  "Retailer (Mrs Shakirah)",
+  "Retailer (Gift)",
+  "Retailer (Abisola)",
+  "Retailer (Salaudeen)",
+  "Retailer (Mummy Amirah)",
+  "Retailer (Iya Habibah)",
+  "Retailer (Bolu)",
+  "Retailer (Aboki Ravil)",
+  "Retailer (Mummy David)",
+  "Retailer (Victor)",
+  "Retailer (Iya Ibeji)",
+  "Retailer (Mummy Adam)",
+  "Retailer (Mummy Rasak)",
+  "Retailer (Iya Waliat)",
+  "Retailer (Yet kenny)",
+  "Retailer (Funmilola)",
+  "Retailer (Mummy Seun)",
+  "Retailer (Mummy Adnan)",
+  "Retailer (Umar Aboki)",
+  "Retailer (Ms Salaam)",
+  "Retailer (Mummy Praise)",
+  "Retailer (Mrs Olanipekun)",
+  "Retailer (Ridwan)",
+  "Retailer (Helen)",
+  "Retailer (Iya Wura)",
+  "Retailer (Stella)",
+  "Retailer (Mummy Christabel)",
+  "Retailer (Mummy Favour)",
+  "Retailer (Pastor Raheem)",
+  "Retailer (Mrs Damilola)",
+  "Retailer (Oladipupo Ventures)",
+  "Retailer (Hassan and Huzain Ventures)",
+  "Retailer (Mummy John)",
+  "Retailer (Amos)",
+  "Retailer (Mrs Lydia)",
+  "Retailer (Christopher)",
+  "Retailer (Temitope)",
+  "Retailer (Sorbo)",
+];
+
+// Historical debtors/customers from your CSV
+export const DEBTORS = [
+  "Staff",
+  "Lafenwa Shop",
+  "ItaMarun Shop",
+  "Olugbode Shop",
+  "Sangotedo Shop",
+  "PowerLine Shop",
+  "Econet Shop",
+  "Mopol Shop",
+  "Adex Shop",
+  "AP Shop",
+  "Ummu Abdillah",
+  "Ummu Roiqoh",
+  "Abu Abdillah",
+  "Mummy Ola",
+  "Olori Ebi",
+  "Usher",
+  "Godspower",
+  "Arike",
+  "Popoola",
+  "Olumide",
+  "Bascube",
+  "Samuel",
+  "Muritador",
+  "Muhammad",
+  "Lukman",
+  "David",
+  "All",
+  "Gift",
+  "Fathia",
+  "Adedamola",
+];
+
+// Helper to calculate profit
+export const calculateProfit = (
+  breadSize: BreadSize,
+  amount: number
+): number => {
+  const cost = BREAD_COSTS[breadSize];
+  const profit = amount - cost;
+  return Math.round(profit * 100) / 100;
+};

@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { X, Send, MessageCircle } from "lucide-react";
 import { CHATBOT_FAQS, ChatMessage } from "../data/chatbotFaqs";
 
 export default function ChatBot() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -38,6 +40,11 @@ export default function ChatBot() {
       setTimeout(() => inputRef.current?.focus(), 100);
     }
   }, [isOpen]);
+
+  // Hide chatbot on sales/dashboard routes
+  if (pathname?.startsWith("/sales")) {
+    return null;
+  }
 
   const handleSendMessage = (text: string) => {
     if (!text.trim()) return;
