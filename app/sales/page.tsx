@@ -8,13 +8,14 @@ import SalesHistory from "./components/SalesHistory";
 import SalesCharts from "./components/SalesCharts";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
-import { LogOut } from "lucide-react";
+import { LogOut, Eye, EyeOff } from "lucide-react";
 
 export default function SalesDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [sales, setSales] = useState<SalesRecord[]>([]);
   const [loading, setLoading] = useState(false);
@@ -222,14 +223,29 @@ export default function SalesDashboard() {
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Password
               </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter password"
-                className="w-full border-2 border-amber-300 dark:border-amber-600 rounded-lg px-4 py-3 mb-6 dark:bg-slate-700 dark:text-gray-100 focus:outline-none focus:border-amber-600"
-                disabled={loading}
-              />
+              <div className="relative mb-6">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter password"
+                  className="w-full border-2 border-amber-300 dark:border-amber-600 rounded-lg px-4 py-3 pr-12 dark:bg-slate-700 dark:text-gray-100 focus:outline-none focus:border-amber-600"
+                  disabled={loading}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  disabled={loading}
+                >
+                  {showPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
+                </button>
+              </div>
 
               {loginError && (
                 <div className="mb-4 p-3 bg-red-50 dark:bg-red-900 border-l-4 border-red-500 rounded">
