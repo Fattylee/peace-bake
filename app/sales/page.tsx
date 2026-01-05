@@ -239,11 +239,7 @@ export default function SalesDashboard() {
                   aria-label={showPassword ? "Hide password" : "Show password"}
                   disabled={loading}
                 >
-                  {showPassword ? (
-                    <EyeOff size={20} />
-                  ) : (
-                    <Eye size={20} />
-                  )}
+                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
 

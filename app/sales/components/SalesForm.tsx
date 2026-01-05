@@ -111,9 +111,15 @@ export default function SalesForm({ onSaleAdded, authToken }: SalesFormProps) {
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to save sale");
+      const responseData = await response.json();
 
-      const newSale = await response.json();
+      if (!response.ok) {
+        throw new Error(
+          responseData.error || `HTTP ${response.status}: Failed to save sale`
+        );
+      }
+
+      const newSale = responseData;
       onSaleAdded(newSale);
 
       // Reset form
@@ -124,8 +130,12 @@ export default function SalesForm({ onSaleAdded, authToken }: SalesFormProps) {
       setDispatcher("");
       setNotes("");
     } catch (error) {
-      console.error("Error submitting sale:", error);
-      setError("Failed to save sale. Please try again.");
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Failed to save sale. Please try again.";
+      console.error("Error submitting sale:", errorMessage);
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
