@@ -14,9 +14,22 @@ import {
 interface SalesFormProps {
   onSaleAdded: (sale: SalesRecord) => void;
   authToken?: string;
+  onShowModal?: (config: {
+    type: "confirm" | "success" | "error" | "info";
+    title: string;
+    message: string;
+    confirmText?: string;
+    cancelText?: string;
+    onConfirm?: () => void;
+    onCancel?: () => void;
+  }) => void;
 }
 
-export default function SalesForm({ onSaleAdded, authToken }: SalesFormProps) {
+export default function SalesForm({
+  onSaleAdded,
+  authToken,
+  onShowModal,
+}: SalesFormProps) {
   const [breadSize, setBreadSize] = useState<BreadSize>("Family");
   const [price, setPrice] = useState(930);
   const [quantity, setQuantity] = useState(1);
@@ -122,6 +135,17 @@ export default function SalesForm({ onSaleAdded, authToken }: SalesFormProps) {
       const newSale = responseData;
       onSaleAdded(newSale);
 
+      // Show success modal
+      if (onShowModal) {
+        onShowModal({
+          type: "success",
+          title: "Sale Recorded",
+          message: `Sale of ₦${amount.toLocaleString()} recorded successfully!`,
+          confirmText: "OK",
+          onConfirm: () => {},
+        });
+      }
+
       // Reset form
       setQuantity(1);
       setDebtor("");
@@ -129,6 +153,7 @@ export default function SalesForm({ onSaleAdded, authToken }: SalesFormProps) {
       setDebtorSearchTerm("");
       setDispatcher("");
       setNotes("");
+      setError("");
     } catch (error) {
       const errorMessage =
         error instanceof Error
@@ -136,6 +161,17 @@ export default function SalesForm({ onSaleAdded, authToken }: SalesFormProps) {
           : "Failed to save sale. Please try again.";
       console.error("Error submitting sale:", errorMessage);
       setError(errorMessage);
+
+      // Show error modal
+      if (onShowModal) {
+        onShowModal({
+          type: "error",
+          title: "Error",
+          message: errorMessage,
+          confirmText: "OK",
+          onConfirm: () => {},
+        });
+      }
     } finally {
       setLoading(false);
     }
