@@ -9,6 +9,7 @@ import SalesCharts from "./components/SalesCharts";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import Modal from "./components/Modal";
+import ToastContainer, { ToastMessage } from "./components/ToastContainer";
 import { LogOut, Eye, EyeOff } from "lucide-react";
 
 type ModalType = "confirm" | "success" | "error" | "info";
@@ -44,6 +45,7 @@ export default function SalesDashboard() {
     new Date().toISOString().split("T")[0]
   );
   const [viewMode, setViewMode] = useState<"today" | "range">("today");
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const [modal, setModal] = useState<ModalState>({
     isOpen: false,
     type: "info",
@@ -54,6 +56,18 @@ export default function SalesDashboard() {
     onConfirm: () => {},
     onCancel: () => {},
   });
+
+  const showToast = (
+    message: string,
+    type: "success" | "error" | "info" = "info"
+  ) => {
+    const id = Date.now().toString();
+    setToasts((prev) => [...prev, { id, message, type }]);
+  };
+
+  const removeToast = (id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
 
   const showModal = (config: Partial<ModalState>) => {
     setModal((prev) => ({ ...prev, ...config, isOpen: true }));
@@ -109,15 +123,7 @@ export default function SalesDashboard() {
 
       if (!response.ok) {
         setLoading(false);
-        showModal({
-          type: "error",
-          title: "Login Failed",
-          message: data.error || "Invalid username or password",
-          confirmText: "Try Again",
-          cancelText: "Cancel",
-          onConfirm: closeModal,
-          onCancel: closeModal,
-        });
+        showToast(data.error || "Invalid username or password", "error");
         return;
       }
 
@@ -133,17 +139,10 @@ export default function SalesDashboard() {
       setPassword("");
       setLoading(false);
 
-      showModal({
-        type: "success",
-        title: "Welcome!",
-        message: `Login successful! Welcome back, ${
-          data.user.role === "admin" ? "Admin" : "Sales Rep"
-        }.`,
-        confirmText: "Continue",
-        cancelText: "Cancel",
-        onConfirm: closeModal,
-        onCancel: closeModal,
-      });
+      showToast(
+        `Welcome back, ${data.user.role === "admin" ? "Admin" : "Sales Rep"}!`,
+        "success"
+      );
 
       // Fetch initial data
       if (viewMode === "today") {
@@ -153,15 +152,7 @@ export default function SalesDashboard() {
       }
     } catch (error) {
       setLoading(false);
-      showModal({
-        type: "error",
-        title: "Error",
-        message: "An error occurred during login. Please try again.",
-        confirmText: "OK",
-        cancelText: "Cancel",
-        onConfirm: closeModal,
-        onCancel: closeModal,
-      });
+      showToast("An error occurred during login. Please try again.", "error");
       console.error("Login error:", error);
     }
   };
@@ -182,16 +173,7 @@ export default function SalesDashboard() {
         setAuthToken(null);
         setSales([]);
         closeModal();
-
-        showModal({
-          type: "success",
-          title: "Logged Out",
-          message: "You have been successfully logged out.",
-          confirmText: "OK",
-          cancelText: "Cancel",
-          onConfirm: closeModal,
-          onCancel: closeModal,
-        });
+        showToast("You have been successfully logged out.", "success");
       },
       onCancel: closeModal,
     });
@@ -260,57 +242,43 @@ export default function SalesDashboard() {
     setSales([newSale, ...sales]);
   };
 
-  const handleDeleteSale = async (id: string) => {
+  const handleDeleteSale = async (sale: SalesRecord) => {
+    const saleDate = new Date(sale.date).toLocaleDateString("en-NG", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
     showModal({
       type: "confirm",
       title: "Delete Sale",
-      message:
-        "Are you sure you want to delete this sale record? This action cannot be undone.",
+      message: `Delete sale record?\n\nDate: ${saleDate}\nCustomer: ${
+        sale.debtor || "N/A"
+      }\nProduct: ${
+        sale.breadSize
+      }\nAmount: ₦${sale.amount.toLocaleString()}\nQuantity: ${
+        sale.quantity
+      }\n\nThis action cannot be undone.`,
       confirmText: "Delete",
       cancelText: "Cancel",
       onConfirm: async () => {
         closeModal();
         try {
-          const response = await fetch(`/api/sales?id=${id}`, {
+          const response = await fetch(`/api/sales?id=${sale.id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${authToken}`,
             },
           });
           if (response.ok) {
-            setSales(sales.filter((s) => s.id !== id));
-            showModal({
-              type: "success",
-              title: "Deleted",
-              message: "Sale record has been deleted successfully.",
-              confirmText: "OK",
-              cancelText: "Cancel",
-              onConfirm: closeModal,
-              onCancel: closeModal,
-            });
+            setSales(sales.filter((s) => s.id !== sale.id));
+            showToast("Sale record has been deleted successfully.", "success");
           } else {
             const data = await response.json();
-            showModal({
-              type: "error",
-              title: "Error",
-              message: `Failed to delete: ${data.error}`,
-              confirmText: "OK",
-              cancelText: "Cancel",
-              onConfirm: closeModal,
-              onCancel: closeModal,
-            });
+            showToast(`Failed to delete: ${data.error}`, "error");
           }
         } catch (error) {
           console.error("Error deleting sale:", error);
-          showModal({
-            type: "error",
-            title: "Error",
-            message: "Error deleting sale. Please try again.",
-            confirmText: "OK",
-            cancelText: "Cancel",
-            onConfirm: closeModal,
-            onCancel: closeModal,
-          });
+          showToast("Error deleting sale. Please try again.", "error");
         }
       },
       onCancel: closeModal,
@@ -321,6 +289,7 @@ export default function SalesDashboard() {
   if (!authenticated) {
     return (
       <>
+        <ToastContainer toasts={toasts} onClose={removeToast} />
         <Modal
           isOpen={modal.isOpen}
           type={modal.type}
@@ -422,6 +391,7 @@ export default function SalesDashboard() {
   // Dashboard screen
   return (
     <>
+      <ToastContainer toasts={toasts} onClose={removeToast} />
       <Modal
         isOpen={modal.isOpen}
         type={modal.type}
@@ -527,7 +497,7 @@ export default function SalesDashboard() {
               <SalesForm
                 onSaleAdded={handleSaleAdded}
                 authToken={authToken || ""}
-                onShowModal={showModal}
+                onShowToast={showToast}
               />
 
               {/* Stats */}

@@ -14,21 +14,13 @@ import {
 interface SalesFormProps {
   onSaleAdded: (sale: SalesRecord) => void;
   authToken?: string;
-  onShowModal?: (config: {
-    type: "confirm" | "success" | "error" | "info";
-    title: string;
-    message: string;
-    confirmText?: string;
-    cancelText?: string;
-    onConfirm?: () => void;
-    onCancel?: () => void;
-  }) => void;
+  onShowToast?: (message: string, type: "success" | "error" | "info") => void;
 }
 
 export default function SalesForm({
   onSaleAdded,
   authToken,
-  onShowModal,
+  onShowToast,
 }: SalesFormProps) {
   const [breadSize, setBreadSize] = useState<BreadSize>("Family");
   const [price, setPrice] = useState(930);
@@ -135,15 +127,12 @@ export default function SalesForm({
       const newSale = responseData;
       onSaleAdded(newSale);
 
-      // Show success modal
-      if (onShowModal) {
-        onShowModal({
-          type: "success",
-          title: "Sale Recorded",
-          message: `Sale of ₦${amount.toLocaleString()} recorded successfully!`,
-          confirmText: "OK",
-          onConfirm: () => {},
-        });
+      // Show success toast
+      if (onShowToast) {
+        onShowToast(
+          `Sale of ₦${amount.toLocaleString()} recorded successfully!`,
+          "success"
+        );
       }
 
       // Reset form
@@ -162,15 +151,9 @@ export default function SalesForm({
       console.error("Error submitting sale:", errorMessage);
       setError(errorMessage);
 
-      // Show error modal
-      if (onShowModal) {
-        onShowModal({
-          type: "error",
-          title: "Error",
-          message: errorMessage,
-          confirmText: "OK",
-          onConfirm: () => {},
-        });
+      // Show error toast
+      if (onShowToast) {
+        onShowToast(errorMessage, "error");
       }
     } finally {
       setLoading(false);

@@ -6,7 +6,7 @@ import { useState } from "react";
 
 interface SalesHistoryProps {
   sales: SalesRecord[];
-  onDelete: (id: string) => void;
+  onDelete: (sale: SalesRecord) => void;
 }
 
 export default function SalesHistory({ sales, onDelete }: SalesHistoryProps) {
@@ -148,9 +148,7 @@ export default function SalesHistory({ sales, onDelete }: SalesHistoryProps) {
                   </td>
                   <td className="py-3 px-4 text-center">
                     <button
-                      onClick={() =>
-                        confirm("Delete this sale?") && onDelete(sale.id)
-                      }
+                      onClick={() => onDelete(sale)}
                       className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 transition"
                     >
                       <Trash2 size={18} />
