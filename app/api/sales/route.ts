@@ -1,8 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SalesRecord } from "@/app/data/salesTypes";
 import { validateToken, getTokenFromHeader } from "@/app/lib/auth";
-import * as fs from "fs";
-import * as path from "path";
+import {
+  loadSalesData,
+  saveSalesData,
+  initializeSalesData,
+} from "@/app/lib/salesData";
+
+// Initialize sales data on first API call
+let initialized = false;
 
 // Middleware to verify authentication
 function verifyAuth(request: NextRequest): boolean {
@@ -14,43 +20,14 @@ function verifyAuth(request: NextRequest): boolean {
   return payload !== null;
 }
 
-// Path to sales data file
-const getSalesFilePath = () => {
-  return path.join(process.cwd(), "data", "sales.json");
-};
-
-// Ensure data directory exists
-const ensureDataDir = () => {
-  const dataDir = path.join(process.cwd(), "data");
-  if (!fs.existsSync(dataDir)) {
-    fs.mkdirSync(dataDir, { recursive: true });
-  }
-};
-
-// Load sales data from file
-const loadSalesData = (): SalesRecord[] => {
-  ensureDataDir();
-  const filePath = getSalesFilePath();
-  try {
-    if (fs.existsSync(filePath)) {
-      const data = fs.readFileSync(filePath, "utf-8");
-      return JSON.parse(data);
-    }
-  } catch (error) {
-    console.error("Error loading sales data:", error);
-  }
-  return [];
-};
-
-// Save sales data to file
-const saveSalesData = (data: SalesRecord[]) => {
-  ensureDataDir();
-  const filePath = getSalesFilePath();
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-};
-
 // GET: Fetch all sales records or filter by date
 export async function GET(request: NextRequest) {
+  // Initialize on first call
+  if (!initialized) {
+    initializeSalesData();
+    initialized = true;
+  }
+
   // Verify authentication
   if (!verifyAuth(request)) {
     return NextResponse.json(
@@ -121,9 +98,11 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(newRecord, { status: 201 });
   } catch (error) {
-    console.error("Error creating sales record:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    console.error("Error creating sales record:", errorMessage);
     return NextResponse.json(
-      { error: "Failed to create sales record" },
+      { error: `Failed to create sales record: ${errorMessage}` },
       { status: 500 }
     );
   }
@@ -163,9 +142,11 @@ export async function PUT(request: NextRequest) {
     saveSalesData(sales);
     return NextResponse.json(sales[index]);
   } catch (error) {
-    console.error("Error updating sales record:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    console.error("Error updating sales record:", errorMessage);
     return NextResponse.json(
-      { error: "Failed to update sales record" },
+      { error: `Failed to update sales record: ${errorMessage}` },
       { status: 500 }
     );
   }
@@ -205,9 +186,11 @@ export async function DELETE(request: NextRequest) {
     saveSalesData(filteredSales);
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error("Error deleting sales record:", error);
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    console.error("Error deleting sales record:", errorMessage);
     return NextResponse.json(
-      { error: "Failed to delete sales record" },
+      { error: `Failed to delete sales record: ${errorMessage}` },
       { status: 500 }
     );
   }
