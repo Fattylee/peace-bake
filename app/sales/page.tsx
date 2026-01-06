@@ -183,6 +183,9 @@ export default function SalesDashboard() {
     try {
       const response = await fetch(`/api/sales?id=${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
       });
       if (response.ok) {
         setSales(sales.filter((s) => s.id !== id));
