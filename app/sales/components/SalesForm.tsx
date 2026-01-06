@@ -14,9 +14,14 @@ import {
 interface SalesFormProps {
   onSaleAdded: (sale: SalesRecord) => void;
   authToken?: string;
+  onShowToast?: (message: string, type: "success" | "error" | "info") => void;
 }
 
-export default function SalesForm({ onSaleAdded, authToken }: SalesFormProps) {
+export default function SalesForm({
+  onSaleAdded,
+  authToken,
+  onShowToast,
+}: SalesFormProps) {
   const [breadSize, setBreadSize] = useState<BreadSize>("Family");
   const [price, setPrice] = useState(930);
   const [quantity, setQuantity] = useState(1);
@@ -122,6 +127,14 @@ export default function SalesForm({ onSaleAdded, authToken }: SalesFormProps) {
       const newSale = responseData;
       onSaleAdded(newSale);
 
+      // Show success toast
+      if (onShowToast) {
+        onShowToast(
+          `Sale of ₦${amount.toLocaleString()} recorded successfully!`,
+          "success"
+        );
+      }
+
       // Reset form
       setQuantity(1);
       setDebtor("");
@@ -129,6 +142,7 @@ export default function SalesForm({ onSaleAdded, authToken }: SalesFormProps) {
       setDebtorSearchTerm("");
       setDispatcher("");
       setNotes("");
+      setError("");
     } catch (error) {
       const errorMessage =
         error instanceof Error
@@ -136,6 +150,11 @@ export default function SalesForm({ onSaleAdded, authToken }: SalesFormProps) {
           : "Failed to save sale. Please try again.";
       console.error("Error submitting sale:", errorMessage);
       setError(errorMessage);
+
+      // Show error toast
+      if (onShowToast) {
+        onShowToast(errorMessage, "error");
+      }
     } finally {
       setLoading(false);
     }
