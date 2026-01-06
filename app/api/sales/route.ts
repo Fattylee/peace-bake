@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SalesRecord } from "@/app/data/salesTypes";
 import { validateToken, getTokenFromHeader } from "@/app/lib/auth";
-import { loadSalesData, saveSalesData } from "@/app/lib/salesData";
+import {
+  loadSalesData,
+  saveSalesData,
+  initializeSalesData,
+} from "@/app/lib/salesData";
+
+// Initialize sales data on first API call
+let initialized = false;
 
 // Middleware to verify authentication
 function verifyAuth(request: NextRequest): boolean {
@@ -15,6 +22,12 @@ function verifyAuth(request: NextRequest): boolean {
 
 // GET: Fetch all sales records or filter by date
 export async function GET(request: NextRequest) {
+  // Initialize on first call
+  if (!initialized) {
+    initializeSalesData();
+    initialized = true;
+  }
+
   // Verify authentication
   if (!verifyAuth(request)) {
     return NextResponse.json(
