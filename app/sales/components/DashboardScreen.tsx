@@ -7,6 +7,8 @@ import SalesStats from "./SalesStats";
 import SalesHistory from "./SalesHistory";
 import SalesCharts from "./SalesCharts";
 import DashboardHeader from "./DashboardHeader";
+import CollapsibleSection from "./CollapsibleSection";
+import { useCollapsibleView } from "../hooks/useCollapsibleView";
 import { SalesRecord, UserRole } from "@/app/data/salesTypes";
 
 interface DashboardScreenProps {
@@ -46,6 +48,16 @@ export default function DashboardScreen({
   onShowToast,
   onDeleteSale,
 }: DashboardScreenProps) {
+  // ========================================================================
+  // Logic
+  // ========================================================================
+
+  const { expandedSections, toggleSection } = useCollapsibleView();
+
+  // ========================================================================
+  // Render
+  // ========================================================================
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-br from-amber-50 to-orange-50 dark:from-slate-900 dark:to-slate-800">
       <Header hideNavigation={true} />
@@ -73,21 +85,39 @@ export default function DashboardScreen({
           </div>
         ) : (
           <div className="space-y-8">
-            {/* Sales Form */}
+            {/* Sales Form - Always Visible */}
             <SalesForm
               onSaleAdded={onSaleAdded}
               authToken={authToken}
               onShowToast={onShowToast}
             />
 
-            {/* Sales Stats */}
-            <SalesStats sales={sales} />
+            {/* Sales Stats - Collapsible */}
+            <CollapsibleSection
+              title="Sales Statistics"
+              isOpen={expandedSections.stats}
+              onToggle={() => toggleSection("stats")}
+            >
+              <SalesStats sales={sales} />
+            </CollapsibleSection>
 
-            {/* Sales Charts */}
-            <SalesCharts sales={sales} />
+            {/* Sales Charts - Collapsible */}
+            <CollapsibleSection
+              title="Sales Analytics"
+              isOpen={expandedSections.charts}
+              onToggle={() => toggleSection("charts")}
+            >
+              <SalesCharts sales={sales} />
+            </CollapsibleSection>
 
-            {/* Sales History */}
-            <SalesHistory sales={sales} onDelete={onDeleteSale} />
+            {/* Sales History - Collapsible */}
+            <CollapsibleSection
+              title="Sales History"
+              isOpen={expandedSections.history}
+              onToggle={() => toggleSection("history")}
+            >
+              <SalesHistory sales={sales} onDelete={onDeleteSale} />
+            </CollapsibleSection>
           </div>
         )}
       </main>
