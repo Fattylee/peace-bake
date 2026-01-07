@@ -52,7 +52,7 @@ export default function DashboardScreen({
   // Logic
   // ========================================================================
 
-  const { expandedSections, toggleSection } = useCollapsibleView();
+  const { isMobile, expandedSections, toggleSection } = useCollapsibleView();
 
   // ========================================================================
   // Render
@@ -92,29 +92,32 @@ export default function DashboardScreen({
               onShowToast={onShowToast}
             />
 
-            {/* Sales Stats - Collapsible */}
+            {/* Sales Stats - Collapsible on Mobile */}
             <CollapsibleSection
               title="Sales Statistics"
               isOpen={expandedSections.stats}
               onToggle={() => toggleSection("stats")}
+              isMobile={isMobile}
             >
               <SalesStats sales={sales} />
             </CollapsibleSection>
 
-            {/* Sales Charts - Collapsible */}
+            {/* Sales Charts - Collapsible on Mobile */}
             <CollapsibleSection
               title="Sales Analytics"
               isOpen={expandedSections.charts}
               onToggle={() => toggleSection("charts")}
+              isMobile={isMobile}
             >
               <SalesCharts sales={sales} />
             </CollapsibleSection>
 
-            {/* Sales History - Collapsible */}
+            {/* Sales History - Collapsible on Mobile */}
             <CollapsibleSection
               title="Sales History"
               isOpen={expandedSections.history}
               onToggle={() => toggleSection("history")}
+              isMobile={isMobile}
             >
               <SalesHistory sales={sales} onDelete={onDeleteSale} />
             </CollapsibleSection>

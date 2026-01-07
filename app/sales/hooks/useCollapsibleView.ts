@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 
 export function useCollapsibleView(
   initialState = {
@@ -8,12 +8,32 @@ export function useCollapsibleView(
   }
 ) {
   // ========================================================================
-  // Initial State
-  // ========================================================================
   // State
   // ========================================================================
 
+  const [isMobile, setIsMobile] = useState(false);
   const [expandedSections, setExpandedSections] = useState(initialState);
+
+  // ========================================================================
+  // Effects
+  // ========================================================================
+
+  useEffect(() => {
+    // Check initial screen size
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    checkMobile();
+
+    // Listen for window resize
+    const handleResize = () => {
+      checkMobile();
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   // ========================================================================
   // Handlers
@@ -34,6 +54,7 @@ export function useCollapsibleView(
   // ========================================================================
 
   return {
+    isMobile,
     expandedSections,
     toggleSection,
   };
