@@ -2,38 +2,37 @@
 
 import { useEffect } from "react";
 
+const breads = [
+  {
+    name: "Jumbo",
+    price: "1500",
+    priceCurrency: "NGN",
+    desc: "Perfect for large families and events",
+    image: "/landing-page/Jumbo and Family-mini size bread_.jpg",
+  },
+  {
+    name: "Family",
+    price: "1000",
+    priceCurrency: "NGN",
+    desc: "Ideal for everyday family meals",
+    image: "/landing-page/Family and Family-Mini.jpg",
+  },
+  {
+    name: "Family Mini",
+    price: "800",
+    priceCurrency: "NGN",
+    desc: "Smaller size, same great taste",
+    image: "/landing-page/Family-mini.jpeg",
+  },
+  {
+    name: "Solo",
+    price: "400",
+    priceCurrency: "NGN",
+    desc: "Great for individuals and quick bites",
+    image: "/landing-page/Family and Family-Mini.jpg",
+  },
+];
 export default function BreadVariantsSection() {
-  const breads = [
-    {
-      name: "Jumbo",
-      price: "1500",
-      priceCurrency: "NGN",
-      desc: "Perfect for large families and events",
-      image: "/landing-page/Jumbo and Family-mini size bread_.jpg",
-    },
-    {
-      name: "Family",
-      price: "1000",
-      priceCurrency: "NGN",
-      desc: "Ideal for everyday family meals",
-      image: "/landing-page/Family and Family-Mini.jpg",
-    },
-    {
-      name: "Family Mini",
-      price: "800",
-      priceCurrency: "NGN",
-      desc: "Smaller size, same great taste",
-      image: "/landing-page/Family-mini.jpeg",
-    },
-    {
-      name: "Solo",
-      price: "400",
-      priceCurrency: "NGN",
-      desc: "Great for individuals and quick bites",
-      image: "/landing-page/Family and Family-Mini.jpg",
-    },
-  ];
-
   useEffect(() => {
     // Add product schema for each bread variant
     const products = breads.map((bread) => ({

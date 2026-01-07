@@ -27,8 +27,6 @@ export default function SalesStats({ sales }: SalesStatsProps) {
       debtorCount[s.debtor] = (debtorCount[s.debtor] || 0) + s.amount;
     }
   });
-  const topDebtor =
-    Object.entries(debtorCount).sort(([, a], [, b]) => b - a)[0]?.[0] || "N/A";
 
   const stats = [
     {

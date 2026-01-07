@@ -15,7 +15,7 @@ export interface LoginPayload {
 export interface LoginResponse {
   token: string;
   user: {
-    role: "admin" | "sales";
+    role: "admin" | "sales_rep";
   };
 }
 
