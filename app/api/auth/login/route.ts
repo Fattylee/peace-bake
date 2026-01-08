@@ -1,9 +1,29 @@
 import { DashboardUser } from "@/app/data/salesTypes";
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
+import { connectToDatabase } from "@/app/lib/db";
+import { DashboardUserModel } from "@/app/lib/models";
 
-// Get dashboard users from environment
-function getDashboardUsers(): DashboardUser[] {
+// Get dashboard users from database (fallback to environment)
+async function getDashboardUsers(): Promise<DashboardUser[]> {
+  try {
+    await connectToDatabase();
+    const users = await DashboardUserModel.find().lean().exec();
+    if (users.length > 0) {
+      return users.map(
+        (user) =>
+          ({
+            username: user.username,
+            password: user.password,
+            role: user.role,
+          } as DashboardUser)
+      );
+    }
+  } catch (error) {
+    console.error("Error fetching users from database:", error);
+  }
+
+  // Fallback to environment variable
   try {
     const usersEnv = process.env.DASHBOARD_USERS;
     if (!usersEnv) {
@@ -51,8 +71,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Find user from environment (in production, query a secure database)
-    const dashboardUsers = getDashboardUsers();
+    // Find user from database or environment
+    const dashboardUsers = await getDashboardUsers();
     const user = dashboardUsers.find(
       (u) => u.username === username && u.password === password
     );
