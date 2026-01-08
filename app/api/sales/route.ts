@@ -1,14 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { SalesRecord } from "@/app/data/salesTypes";
 import { validateToken, getTokenFromHeader } from "@/app/lib/auth";
-import {
-  loadSalesData,
-  saveSalesData,
-  initializeSalesData,
-} from "@/app/lib/salesData";
-
-// Initialize sales data on first API call
-let initialized = false;
+import { connectToDatabase } from "@/app/lib/db";
+import { Sales } from "@/app/lib/models";
 
 // Middleware to verify authentication
 function verifyAuth(request: NextRequest): boolean {
@@ -22,12 +16,6 @@ function verifyAuth(request: NextRequest): boolean {
 
 // GET: Fetch all sales records or filter by date
 export async function GET(request: NextRequest) {
-  // Initialize on first call
-  if (!initialized) {
-    initializeSalesData();
-    initialized = true;
-  }
-
   // Verify authentication
   if (!verifyAuth(request)) {
     return NextResponse.json(
@@ -36,31 +24,44 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  const searchParams = request.nextUrl.searchParams;
-  const date = searchParams.get("date");
-  const startDate = searchParams.get("startDate");
-  const endDate = searchParams.get("endDate");
+  try {
+    await connectToDatabase();
 
-  let sales = loadSalesData();
+    const searchParams = request.nextUrl.searchParams;
+    const date = searchParams.get("date");
+    const startDate = searchParams.get("startDate");
+    const endDate = searchParams.get("endDate");
 
-  // Filter by single date
-  if (date) {
-    sales = sales.filter((s) => s.date === date);
+    interface QueryFilter {
+      date?: string | { $gte: string; $lte: string };
+    }
+    const query: QueryFilter = {};
+
+    // Filter by single date
+    if (date) {
+      query.date = date;
+    }
+
+    // Filter by date range
+    if (startDate && endDate) {
+      query.date = {
+        $gte: startDate,
+        $lte: endDate,
+      };
+    }
+
+    const sales = await Sales.find(query).sort({ createdAt: -1 }).lean().exec();
+
+    return NextResponse.json(sales);
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    console.error("Error fetching sales:", errorMessage);
+    return NextResponse.json(
+      { error: `Failed to fetch sales: ${errorMessage}` },
+      { status: 500 }
+    );
   }
-
-  // Filter by date range
-  if (startDate && endDate) {
-    sales = sales.filter((s) => s.date >= startDate && s.date <= endDate);
-  }
-
-  // Sort by date and time (newest first)
-  sales.sort(
-    (a, b) =>
-      new Date(`${b.date} ${b.time}`).getTime() -
-      new Date(`${a.date} ${a.time}`).getTime()
-  );
-
-  return NextResponse.json(sales);
 }
 
 // POST: Create new sales record
@@ -74,6 +75,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    await connectToDatabase();
     const body = await request.json();
 
     const newRecord: SalesRecord = {
@@ -92,11 +94,8 @@ export async function POST(request: NextRequest) {
       createdAt: new Date().toISOString(),
     };
 
-    const sales = loadSalesData();
-    sales.push(newRecord);
-    saveSalesData(sales);
-
-    return NextResponse.json(newRecord, { status: 201 });
+    const sale = await Sales.create(newRecord);
+    return NextResponse.json(sale.toObject(), { status: 201 });
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
@@ -119,28 +118,31 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
+    await connectToDatabase();
     const body = await request.json();
     const { id } = body;
 
-    const sales = loadSalesData();
-    const index = sales.findIndex((s) => s.id === id);
+    if (!id) {
+      return NextResponse.json(
+        { error: "ID parameter required" },
+        { status: 400 }
+      );
+    }
 
-    if (index === -1) {
+    const sale = await Sales.findOneAndUpdate(
+      { id },
+      { $set: { ...body, id } },
+      { new: true }
+    ).lean();
+
+    if (!sale) {
       return NextResponse.json(
         { error: "Sales record not found" },
         { status: 404 }
       );
     }
 
-    sales[index] = {
-      ...sales[index],
-      ...body,
-      id, // preserve id
-      createdAt: sales[index].createdAt, // preserve original creation time
-    };
-
-    saveSalesData(sales);
-    return NextResponse.json(sales[index]);
+    return NextResponse.json(sale);
   } catch (error) {
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error";
@@ -163,6 +165,8 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
+    await connectToDatabase();
+
     const searchParams = request.nextUrl.searchParams;
     const id = searchParams.get("id");
 
@@ -173,17 +177,15 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    const sales = loadSalesData();
-    const filteredSales = sales.filter((s) => s.id !== id);
+    const result = await Sales.deleteOne({ id });
 
-    if (filteredSales.length === sales.length) {
+    if (result.deletedCount === 0) {
       return NextResponse.json(
         { error: "Sales record not found" },
         { status: 404 }
       );
     }
 
-    saveSalesData(filteredSales);
     return NextResponse.json({ success: true });
   } catch (error) {
     const errorMessage =

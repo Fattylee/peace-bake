@@ -284,7 +284,8 @@ export default function SalesForm({
                   ))
                 ) : debtorSearchTerm ? (
                   <div className="px-3 py-2 text-gray-500 dark:text-gray-400">
-                    No matches. Press Enter to add "{debtorSearchTerm}"
+                    No matches. Press Enter to add &quot;{debtorSearchTerm}
+                    &quot;
                   </div>
                 ) : (
                   <div className="px-3 py-2 text-gray-500 dark:text-gray-400">

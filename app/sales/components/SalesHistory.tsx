@@ -42,7 +42,7 @@ export default function SalesHistory({ sales, onDelete }: SalesHistoryProps) {
       <div className="grid md:grid-cols-4 gap-4 mb-6">
         <input
           type="text"
-          placeholder="Search debtor, dispatcher, notes..."
+          placeholder="Search customer, dispatcher, notes..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="col-span-full md:col-span-2 border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"

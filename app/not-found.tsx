@@ -14,8 +14,8 @@ export default function NotFound() {
             Page not found
           </h1>
           <p className="mt-4 text-lg text-gray-700 dark:text-gray-300">
-            Sorry — we couldn't find that page. Our ovens are busy baking fresh
-            loaves, but we'd love to help you find what you need.
+            Sorry — we couldn&apos;t find that page. Our ovens are busy baking
+            fresh loaves, but we&apos;d love to help you find what you need.
           </p>
           <div className="mt-8 flex items-center justify-center gap-4">
             <Link
