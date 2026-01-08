@@ -1,6 +1,12 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+} from "react";
 
 type Theme = "light" | "dark";
 
@@ -20,6 +26,15 @@ const applyTheme = (newTheme: Theme) => {
   }
 };
 
+// Hydration-safe hook to detect client-side mounting
+const emptySubscribe = () => () => {};
+const useIsClient = () =>
+  useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  );
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => {
     // Get theme from localStorage or system preference
@@ -30,12 +45,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     ).matches;
     return storedTheme || (prefersDark ? "dark" : "light");
   });
-  const [mounted, setMounted] = useState(false);
+  const mounted = useIsClient();
 
   // Apply theme on mount and when theme changes
   useEffect(() => {
     applyTheme(theme);
-    setMounted(true);
   }, [theme]);
 
   const toggleTheme = () => {
@@ -44,7 +58,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem("theme", newTheme);
   };
 
-  if (!mounted) return <>{children}</>;
+  if (!mounted) return null;
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
