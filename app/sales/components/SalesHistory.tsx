@@ -33,11 +33,7 @@ export default function SalesHistory({ sales, onDelete }: SalesHistoryProps) {
   const customerTypes = Array.from(new Set(sales.map((s) => s.customerType)));
 
   return (
-    <div className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-md">
-      <h2 className="text-xl font-bold text-amber-900 dark:text-amber-400 mb-6">
-        Sales History
-      </h2>
-
+    <>
       {/* Filters */}
       <div className="grid md:grid-cols-4 gap-4 mb-6">
         <input
@@ -199,6 +195,6 @@ export default function SalesHistory({ sales, onDelete }: SalesHistoryProps) {
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 }
