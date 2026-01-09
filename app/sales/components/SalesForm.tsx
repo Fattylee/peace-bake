@@ -36,6 +36,9 @@ export default function SalesForm({
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [debtorHighlightedIndex, setDebtorHighlightedIndex] = useState(-1);
+  const [customerTypeHighlightedIndex, setCustomerTypeHighlightedIndex] =
+    useState(-1);
 
   // Refs for dropdown containers
   const debtorDropdownRef = useRef<HTMLDivElement>(null);
@@ -91,12 +94,88 @@ export default function SalesForm({
     setDebtor(selectedDebtor);
     setDebtorDropdownOpen(false);
     setDebtorSearchTerm("");
+    setDebtorHighlightedIndex(-1);
   };
 
   const handleCustomerTypeSelect = (selectedType: CustomerType) => {
     setCustomerType(selectedType);
     setCustomerTypeDropdownOpen(false);
     setCustomerTypeSearchTerm("");
+    setCustomerTypeHighlightedIndex(-1);
+  };
+
+  // Debtor keyboard navigation
+  const handleDebtorKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (!debtorDropdownOpen || filteredDebtors.length === 0) {
+      if (e.key === "Enter") {
+        setDebtorDropdownOpen(true);
+      }
+      return;
+    }
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setDebtorHighlightedIndex((prev) =>
+          prev < filteredDebtors.length - 1 ? prev + 1 : prev
+        );
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setDebtorHighlightedIndex((prev) => (prev > 0 ? prev - 1 : -1));
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (debtorHighlightedIndex >= 0) {
+          handleDebtorSelect(filteredDebtors[debtorHighlightedIndex]);
+        }
+        break;
+      case "Escape":
+        e.preventDefault();
+        setDebtorDropdownOpen(false);
+        break;
+      default:
+        break;
+    }
+  };
+
+  // Customer type keyboard navigation
+  const handleCustomerTypeKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (!customerTypeDropdownOpen || filteredCustomerTypes.length === 0) {
+      if (e.key === "Enter") {
+        setCustomerTypeDropdownOpen(true);
+      }
+      return;
+    }
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        setCustomerTypeHighlightedIndex((prev) =>
+          prev < filteredCustomerTypes.length - 1 ? prev + 1 : prev
+        );
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        setCustomerTypeHighlightedIndex((prev) => (prev > 0 ? prev - 1 : -1));
+        break;
+      case "Enter":
+        e.preventDefault();
+        if (customerTypeHighlightedIndex >= 0) {
+          handleCustomerTypeSelect(
+            filteredCustomerTypes[customerTypeHighlightedIndex] as CustomerType
+          );
+        }
+        break;
+      case "Escape":
+        e.preventDefault();
+        setCustomerTypeDropdownOpen(false);
+        break;
+      default:
+        break;
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -287,8 +366,10 @@ export default function SalesForm({
                   setDebtorSearchTerm("");
                 }
                 setDebtorDropdownOpen(true);
+                setDebtorHighlightedIndex(-1);
               }}
               onFocus={() => setDebtorDropdownOpen(true)}
+              onKeyDown={handleDebtorKeyDown}
               placeholder="Search or select from list..."
               className={`w-full border-2 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none ${
                 error && !debtor
@@ -299,12 +380,16 @@ export default function SalesForm({
             {debtorDropdownOpen && (
               <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-700 border dark:border-slate-600 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
                 {filteredDebtors.length > 0 ? (
-                  filteredDebtors.map((d) => (
+                  filteredDebtors.map((d, index) => (
                     <button
                       key={d}
                       type="button"
                       onClick={() => handleDebtorSelect(d)}
-                      className="w-full text-left px-3 py-2 hover:bg-amber-100 dark:hover:bg-slate-600 transition text-gray-800 dark:text-gray-200"
+                      className={`w-full text-left px-3 py-2 transition text-gray-800 dark:text-gray-200 ${
+                        index === debtorHighlightedIndex
+                          ? "bg-amber-200 dark:bg-amber-600 font-semibold"
+                          : "hover:bg-amber-100 dark:hover:bg-slate-600"
+                      }`}
                     >
                       {d}
                     </button>
@@ -316,7 +401,7 @@ export default function SalesForm({
                   </div>
                 ) : (
                   <div className="px-3 py-2 text-gray-500 dark:text-gray-400">
-                    Type to search...
+                    Type to search... (Use ↑↓ arrow keys to navigate)
                   </div>
                 )}
               </div>
@@ -348,29 +433,35 @@ export default function SalesForm({
                   setCustomerTypeSearchTerm("");
                 }
                 setCustomerTypeDropdownOpen(true);
+                setCustomerTypeHighlightedIndex(-1);
               }}
               onFocus={() => setCustomerTypeDropdownOpen(true)}
+              onKeyDown={handleCustomerTypeKeyDown}
               placeholder="Search customer type..."
               className="w-full border-2 border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none focus:border-amber-600"
             />
             {customerTypeDropdownOpen && (
               <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-700 border dark:border-slate-600 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
                 {filteredCustomerTypes.length > 0 ? (
-                  filteredCustomerTypes.map((ct) => (
+                  filteredCustomerTypes.map((ct, index) => (
                     <button
                       key={ct}
                       type="button"
                       onClick={() =>
                         handleCustomerTypeSelect(ct as CustomerType)
                       }
-                      className="w-full text-left px-3 py-2 hover:bg-amber-100 dark:hover:bg-slate-600 transition text-gray-800 dark:text-gray-200 text-sm"
+                      className={`w-full text-left px-3 py-2 transition text-gray-800 dark:text-gray-200 text-sm ${
+                        index === customerTypeHighlightedIndex
+                          ? "bg-amber-200 dark:bg-amber-600 font-semibold"
+                          : "hover:bg-amber-100 dark:hover:bg-slate-600"
+                      }`}
                     >
                       {ct}
                     </button>
                   ))
                 ) : (
                   <div className="px-3 py-2 text-gray-500 dark:text-gray-400 text-sm">
-                    No matches
+                    No matches (Use ↑↓ arrow keys to navigate)
                   </div>
                 )}
               </div>
