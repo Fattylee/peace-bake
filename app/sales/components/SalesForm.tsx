@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   BreadSize,
   CustomerType,
@@ -36,6 +36,33 @@ export default function SalesForm({
   const [notes, setNotes] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  // Refs for dropdown containers
+  const debtorDropdownRef = useRef<HTMLDivElement>(null);
+  const customerTypeDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        debtorDropdownRef.current &&
+        !debtorDropdownRef.current.contains(event.target as Node)
+      ) {
+        setDebtorDropdownOpen(false);
+      }
+      if (
+        customerTypeDropdownRef.current &&
+        !customerTypeDropdownRef.current.contains(event.target as Node)
+      ) {
+        setCustomerTypeDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const amount = price * quantity;
   const profit = calculateProfit(breadSize, amount);
@@ -242,7 +269,7 @@ export default function SalesForm({
       {/* Debtor and Customer Type Grid */}
       <div className="grid md:grid-cols-2 gap-4 mb-6">
         {/* Debtor/Customer Name - REQUIRED with Autocomplete */}
-        <div className="relative">
+        <div className="relative" ref={debtorDropdownRef}>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Debtor/Customer Name <span className="text-red-600">*</span>
           </label>
@@ -303,7 +330,7 @@ export default function SalesForm({
         </div>
 
         {/* Customer Type - Searchable & REQUIRED */}
-        <div>
+        <div ref={customerTypeDropdownRef}>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
             Customer Type <span className="text-red-600">*</span>
           </label>
