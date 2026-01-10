@@ -47,7 +47,15 @@ export default function CollapsibleSection({
 
       {/* Content */}
       {shouldShowContent && (
-        <div className="border-t dark:border-slate-700 p-6">{children}</div>
+        <div
+          className={`border-t dark:border-slate-700 p-6 ${
+            title === "Sales Analytics"
+              ? "bg-gradient-to-br from-amber-50 to-orange-50 dark:from-slate-900 dark:to-slate-900 dark:bg-slate-900"
+              : ""
+          }`}
+        >
+          {children}
+        </div>
       )}
     </div>
   );
