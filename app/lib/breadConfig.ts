@@ -44,18 +44,3 @@ export const BREAD_COSTS: Record<BreadSize, number> = {
     "NEXT_PUBLIC_BREAD_COST_SOLO"
   ),
 };
-
-/**
- * Calculate profit for a bread variant
- * @param breadSize - Type of bread
- * @param amount - Total revenue (price * quantity)
- * @returns Profit amount
- */
-export const calculateProfit = (
-  breadSize: BreadSize,
-  amount: number
-): number => {
-  const cost = BREAD_COSTS[breadSize];
-  const profit = amount - cost;
-  return Math.round(profit * 100) / 100;
-};

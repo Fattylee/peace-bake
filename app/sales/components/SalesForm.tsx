@@ -68,7 +68,7 @@ export default function SalesForm({
   }, []);
 
   const amount = price * quantity;
-  const profit = calculateProfit(breadSize, amount);
+  const profit = calculateProfit(breadSize, price, quantity);
 
   // Filter debtors based on search
   const filteredDebtors = DEBTORS.filter((d) =>

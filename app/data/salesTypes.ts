@@ -1,8 +1,5 @@
 // Sales data types and constants
-import {
-  BREAD_COSTS as BREAD_COSTS_CONFIG,
-  calculateProfit as calculateProfitConfig,
-} from "@/app/lib/breadConfig";
+import { BREAD_COSTS as BREAD_COSTS_CONFIG } from "@/app/lib/breadConfig";
 
 export type BreadSize = "Jumbo" | "Family" | "Family-Mini" | "Solo";
 export type CustomerType = string; // Allow any customer type string
@@ -44,9 +41,10 @@ export const BREAD_COSTS = BREAD_COSTS_CONFIG;
 // Calculate profit for a bread variant
 export const calculateProfit = (
   breadSize: BreadSize,
-  amount: number
+  sellingPrice: number,
+  quantity: number
 ): number => {
-  return calculateProfitConfig(breadSize, amount);
+  return (sellingPrice - BREAD_COSTS[breadSize]) * quantity;
 };
 
 export const CUSTOMER_TYPES: CustomerType[] = [
