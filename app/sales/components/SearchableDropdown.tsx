@@ -148,7 +148,7 @@ export default function SearchableDropdown({
           onFocus={() => setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
-          className={`w-full border-2 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none ${borderClass}`}
+          className={`w-full h-10 border-2 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100 focus:outline-none ${borderClass}`}
         />
         {isOpen && (
           <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-slate-700 border dark:border-slate-600 rounded-lg shadow-lg z-10 max-h-48 overflow-y-auto">
@@ -179,11 +179,13 @@ export default function SearchableDropdown({
           </div>
         )}
       </div>
-      {value && (
-        <p className="mt-2 text-sm text-green-600 dark:text-green-400">
-          Selected: <strong>{value}</strong>
-        </p>
-      )}
+      <div className="h-7 mt-2">
+        {value && (
+          <p className="text-sm text-green-600 dark:text-green-400">
+            Selected: <strong>{value}</strong>
+          </p>
+        )}
+      </div>
     </div>
   );
 }

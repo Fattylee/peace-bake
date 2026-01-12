@@ -41,7 +41,7 @@ export function SelectField({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
+        className="w-full h-10 border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
       >
         {options.map((opt) => (
           <option key={opt.value} value={opt.value}>
@@ -73,7 +73,7 @@ export function NumberInput({
         min={min}
         value={value}
         onChange={(e) => onChange(Number(e.target.value))}
-        className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
+        className="w-full h-10 border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
       />
     </FormField>
   );
@@ -101,7 +101,7 @@ export function ReadOnlyField({
         type="text"
         value={value}
         disabled
-        className={`w-full border dark:border-slate-600 rounded-lg px-3 py-2 ${bgClass}`}
+        className={`w-full h-10 border dark:border-slate-600 rounded-lg px-3 py-2 ${bgClass}`}
       />
     </FormField>
   );
@@ -127,7 +127,7 @@ export function TextInput({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
+        className="w-full h-10 border dark:border-slate-600 rounded-lg px-3 py-2 dark:bg-slate-700 dark:text-gray-100"
       />
     </FormField>
   );
@@ -160,9 +160,12 @@ interface ErrorAlertProps {
 }
 
 export function ErrorAlert({ message }: ErrorAlertProps) {
-  if (!message) return null;
   return (
-    <div className="mb-6 p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg">
+    <div
+      className={`mb-6 p-4 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-200 rounded-lg transition-opacity ${
+        message ? "opacity-100" : "opacity-0 h-0 p-0 mb-0"
+      }`}
+    >
       {message}
     </div>
   );
