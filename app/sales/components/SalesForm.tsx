@@ -67,8 +67,8 @@ function useSalesForm(initialBreadSize: BreadSize = "Family") {
     breadSize: initialBreadSize,
     price: BREAD_PRICES[initialBreadSize][0],
     quantity: 1,
-    debtor: "",
-    customerType: "",
+    debtor: "Staff",
+    customerType: "Consumer",
     dispatcher: "",
     notes: "",
   });
@@ -259,7 +259,10 @@ export default function SalesForm({
           value={formState.quantity}
           onChange={(v) => updateField("quantity", v)}
         />
-        <ReadOnlyField label="Amount (₦)" value={`₦${amount.toLocaleString()}`} />
+        <ReadOnlyField
+          label="Amount (₦)"
+          value={`₦${amount.toLocaleString()}`}
+        />
       </div>
 
       {/* Debtor & Customer Type */}
