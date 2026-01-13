@@ -1,4 +1,6 @@
 // Sales data types and constants
+import { BREAD_COSTS as BREAD_COSTS_CONFIG } from "@/app/lib/breadConfig";
+
 export type BreadSize = "Jumbo" | "Family" | "Family-Mini" | "Solo";
 export type CustomerType = string; // Allow any customer type string
 export type UserRole = "sales_rep" | "admin";
@@ -33,12 +35,16 @@ export const BREAD_PRICES: Record<BreadSize, number[]> = {
   Solo: [400, 370, 350, 340],
 };
 
-// Approximate cost of goods sold (for profit calculation)
-export const BREAD_COSTS: Record<BreadSize, number> = {
-  Jumbo: 1156, // ~77% cost
-  Family: 686, // ~74% cost
-  "Family-Mini": 468, // ~62% cost
-  Solo: 218, // ~58% cost
+// Export bread costs (imported from breadConfig)
+export const BREAD_COSTS = BREAD_COSTS_CONFIG;
+
+// Calculate profit for a bread variant
+export const calculateProfit = (
+  breadSize: BreadSize,
+  sellingPrice: number,
+  quantity: number
+): number => {
+  return (sellingPrice - BREAD_COSTS[breadSize]) * quantity;
 };
 
 export const CUSTOMER_TYPES: CustomerType[] = [
@@ -254,13 +260,3 @@ export const DEBTORS = [
   "Fathia",
   "Adedamola",
 ];
-
-// Helper to calculate profit
-export const calculateProfit = (
-  breadSize: BreadSize,
-  amount: number
-): number => {
-  const cost = BREAD_COSTS[breadSize];
-  const profit = amount - cost;
-  return Math.round(profit * 100) / 100;
-};

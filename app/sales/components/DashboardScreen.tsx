@@ -8,6 +8,11 @@ import SalesHistory from "./SalesHistory";
 import SalesCharts from "./SalesCharts";
 import DashboardHeader from "./DashboardHeader";
 import CollapsibleSection from "./CollapsibleSection";
+import {
+  SalesStatsLoader,
+  SalesChartsLoader,
+  SalesHistoryLoader,
+} from "./SkeletonLoaders";
 import { useCollapsibleView } from "../hooks/useCollapsibleView";
 import { SalesRecord, UserRole } from "@/app/data/salesTypes";
 
@@ -77,52 +82,48 @@ export default function DashboardScreen({
         />
 
         {/* Content Section */}
-        {loading ? (
-          <div className="text-center py-12">
-            <p className="text-gray-600 dark:text-gray-400">
-              Loading sales data...
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-8">
-            {/* Sales Form - Always Visible */}
-            <SalesForm
-              onSaleAdded={onSaleAdded}
-              authToken={authToken}
-              onShowToast={onShowToast}
-            />
+        <div className="space-y-8">
+          {/* Sales Form - Always Visible */}
+          <SalesForm
+            onSaleAdded={onSaleAdded}
+            authToken={authToken}
+            onShowToast={onShowToast}
+          />
 
-            {/* Sales Stats - Collapsible on Mobile */}
-            <CollapsibleSection
-              title="Sales Statistics"
-              isOpen={expandedSections.stats}
-              onToggle={() => toggleSection("stats")}
-              isMobile={isMobile}
-            >
-              <SalesStats sales={sales} />
-            </CollapsibleSection>
+          {/* Sales Stats - Collapsible on Mobile */}
+          <CollapsibleSection
+            title="Sales Statistics"
+            isOpen={expandedSections.stats}
+            onToggle={() => toggleSection("stats")}
+            isMobile={isMobile}
+          >
+            {loading ? <SalesStatsLoader /> : <SalesStats sales={sales} />}
+          </CollapsibleSection>
 
-            {/* Sales Charts - Collapsible on Mobile */}
-            <CollapsibleSection
-              title="Sales Analytics"
-              isOpen={expandedSections.charts}
-              onToggle={() => toggleSection("charts")}
-              isMobile={isMobile}
-            >
-              <SalesCharts sales={sales} />
-            </CollapsibleSection>
+          {/* Sales Charts - Collapsible on Mobile */}
+          <CollapsibleSection
+            title="Sales Analytics"
+            isOpen={expandedSections.charts}
+            onToggle={() => toggleSection("charts")}
+            isMobile={isMobile}
+          >
+            {loading ? <SalesChartsLoader /> : <SalesCharts sales={sales} />}
+          </CollapsibleSection>
 
-            {/* Sales History - Collapsible on Mobile */}
-            <CollapsibleSection
-              title="Sales History"
-              isOpen={expandedSections.history}
-              onToggle={() => toggleSection("history")}
-              isMobile={isMobile}
-            >
+          {/* Sales History - Collapsible on Mobile */}
+          <CollapsibleSection
+            title="Sales History"
+            isOpen={expandedSections.history}
+            onToggle={() => toggleSection("history")}
+            isMobile={isMobile}
+          >
+            {loading ? (
+              <SalesHistoryLoader />
+            ) : (
               <SalesHistory sales={sales} onDelete={onDeleteSale} />
-            </CollapsibleSection>
-          </div>
-        )}
+            )}
+          </CollapsibleSection>
+        </div>
       </main>
 
       <Footer />

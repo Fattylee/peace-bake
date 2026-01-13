@@ -1,9 +1,11 @@
 "use client";
 
+import { useSyncExternalStore } from "react";
 import Modal from "./components/Modal";
 import ToastContainer from "./components/ToastContainer";
 import LoginScreen from "./components/LoginScreen";
 import DashboardScreen from "./components/DashboardScreen";
+import DashboardLoadingScreen from "./components/DashboardLoadingScreen";
 import { useSalesDashboard } from "./hooks/useSalesDashboard";
 
 // ============================================================================
@@ -11,11 +13,19 @@ import { useSalesDashboard } from "./hooks/useSalesDashboard";
 // ============================================================================
 
 export default function SalesDashboard() {
+  // Hydration-safe client detection
+  const isMounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+
   const {
     // Auth
     authenticated,
     authToken,
     userRole,
+    authInitialized,
 
     // UI
     loading,
@@ -43,6 +53,11 @@ export default function SalesDashboard() {
     handleSaleAdded,
     handleDeleteSale,
   } = useSalesDashboard();
+
+  // Show loading screen while checking auth to prevent CLS
+  if (!isMounted || !authInitialized) {
+    return <DashboardLoadingScreen />;
+  }
 
   return (
     <>

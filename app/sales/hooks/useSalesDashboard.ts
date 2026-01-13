@@ -57,6 +57,7 @@ export function useSalesDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
   const [authToken, setAuthToken] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
+  const [authInitialized, setAuthInitialized] = useState(false);
 
   // UI State
   const [loading, setLoading] = useState(false);
@@ -286,6 +287,8 @@ export function useSalesDashboard() {
       setAuthToken(storedAuth.token);
       setUserRole(storedAuth.role);
     }
+    // Mark auth as initialized regardless of whether user is logged in
+    setAuthInitialized(true);
   }, []);
 
   // Fetch sales based on view mode and date selection
@@ -317,6 +320,7 @@ export function useSalesDashboard() {
     authenticated,
     authToken,
     userRole,
+    authInitialized,
 
     // UI
     loading,
